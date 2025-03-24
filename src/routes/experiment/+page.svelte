@@ -20,15 +20,21 @@
       title: "Cyclist killed in collision with car",
       content: "A cyclist was killed in a collision with a car on Interstate 95 this morning. The incident occurred during rush hour near the downtown exit. The victim was a 30-year-old cyclist who was riding a bike. The cause of the crash is still under investigation.",
       isAIGenerated: true
+    },
+    {
+      id: 4,
+      title: "Pedestrian crashes into car",
+      content: "A pedestrian crashed into a car on Interstate 95 this morning. The incident occurred during rush hour near the downtown exit. The victim was a 30-year-old pedestrian who was crossing the road. The cause of the crash is still under investigation.",
+      isAIGenerated: false
     }
-
   ]
-  const article = {
-    id: 1,
-    title: "Cyclist killed in collision with car",
-    content: "A cyclist was killed in a collision with a car on Interstate 95 this morning. The incident occurred during rush hour near the downtown exit. The victim was a 30-year-old cyclist who was riding a bike. The cause of the crash is still under investigation.",
-    isAIGenerated: true
-  };
+
+  let article; // Declare the article variable
+
+  onMount(() => {
+    const randomIndex = Math.floor(Math.random() * articles.length);
+    article = articles[randomIndex];
+  });
 
   // Likert scale options
   const likertOptions = [
@@ -107,44 +113,50 @@
 
 <div class="container mx-auto p-4 max-w-4xl">
   {#if !submitted}
-    <div class="mb-8 p-6 border border-gray-300 rounded-lg shadow-sm">
-      <h2 class="lg:text-6xl text-4xl font-bold mb-4">{article.title}</h2>
-      <p class="mb-6 text-gray-700">{article.content}</p>
-    </div>
+    {#if article}
+      <div class="mb-8 p-6 border border-gray-300 rounded-lg shadow-sm">
+        <h2 class="lg:text-6xl text-4xl font-bold mb-4">{article.title}</h2>
+        <p class="mb-6 text-gray-700">{article.content}</p>
+      </div>
 
-    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 mb-6">
-      {#each surveyQuestions as question, i}
-        <div class="mb-8">
-          <p class="font-medium mb-8">{question.text}</p>
-          <div class="grid grid-cols-5 gap-2 text-center text-sm">
-            {#each likertOptions as option, index}
-              <div>
-                <label class="flex flex-col items-center cursor-pointer">
-                  <input 
-                    type="radio" 
-                    name={`question-${question.id}`} 
-                    value={index} 
-                    on:change={() => updateAnswer(question.id, index)}
-                    class="mb-1 accent-gray-600"
-                  />
-                  <span>{option}</span>
-                </label>
-              </div>
-            {/each}
+      <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 mb-6">
+        {#each surveyQuestions as question, i}
+          <div class="mb-8">
+            <p class="font-medium mb-8">{question.text}</p>
+            <div class="grid grid-cols-5 gap-2 text-center text-sm">
+              {#each likertOptions as option, index}
+                <div>
+                  <label class="flex flex-col items-center cursor-pointer">
+                    <input 
+                      type="radio" 
+                      name={`question-${question.id}`} 
+                      value={index} 
+                      on:change={() => updateAnswer(question.id, index)}
+                      class="mb-1 accent-gray-600"
+                    />
+                    <span>{option}</span>
+                  </label>
+                </div>
+              {/each}
+            </div>
           </div>
-        </div>
-        {#if i !== surveyQuestions.length - 1}
-          <hr class="mb-4 border-gray-300">
-        {/if}
-      {/each}
+          {#if i !== surveyQuestions.length - 1}
+            <hr class="mb-4 border-gray-300">
+          {/if}
+        {/each}
 
-      <button 
-        on:click={submitSurvey} 
-        class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 mt-4"
-      >
-        Submit Responses
-      </button>
-    </div>
+        <button 
+          on:click={submitSurvey} 
+          class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 mt-4"
+        >
+          Submit Responses
+        </button>
+      </div>
+    {:else}
+      <div class="flex justify-center items-center h-32">
+        <p>Loading...</p>
+      </div>
+    {/if}
   {:else}
     <div class="bg-green-50 p-6 rounded-lg border border-green-200 mb-6">
       <h3 class="text-xl font-bold text-green-700 mb-3">Thank you for responding.</h3>
