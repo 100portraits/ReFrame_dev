@@ -2,10 +2,31 @@
   import { onMount } from 'svelte';
 
   // Single article - AI-generated version
+  const articles = [
+    {
+      id: 1,
+      title: "Multi-Vehicle Accident Causes Major Delays on Interstate 95",
+      content: "A chain-reaction crash involving five vehicles brought traffic to a standstill on Interstate 95 this morning. The incident occurred during rush hour near the downtown exit. Three people were transported to Regional Hospital with non-life-threatening injuries. Officials report that heavy fog and reduced visibility likely contributed to the collision. Motorists are advised to seek alternate routes until cleanup operations are complete.",
+      isAIGenerated: true
+    },
+    {
+      id: 2,
+      title: "A man was killed in a car crash",
+      content: "A man was killed in a car crash on Interstate 95 this morning. The incident occurred during rush hour near the downtown exit. The victim was a 30-year-old man who was driving a sedan. The cause of the crash is still under investigation.",
+      isAIGenerated: false
+    },
+    {
+      id: 3,
+      title: "Cyclist killed in collision with car",
+      content: "A cyclist was killed in a collision with a car on Interstate 95 this morning. The incident occurred during rush hour near the downtown exit. The victim was a 30-year-old cyclist who was riding a bike. The cause of the crash is still under investigation.",
+      isAIGenerated: true
+    }
+
+  ]
   const article = {
     id: 1,
-    title: "Multi-Vehicle Accident Causes Major Delays on Interstate 95",
-    content: "A chain-reaction crash involving five vehicles brought traffic to a standstill on Interstate 95 this morning. The incident occurred during rush hour near the downtown exit. Three people were transported to Regional Hospital with non-life-threatening injuries. Officials report that heavy fog and reduced visibility likely contributed to the collision. Motorists are advised to seek alternate routes until cleanup operations are complete.",
+    title: "Cyclist killed in collision with car",
+    content: "A cyclist was killed in a collision with a car on Interstate 95 this morning. The incident occurred during rush hour near the downtown exit. The victim was a 30-year-old cyclist who was riding a bike. The cause of the crash is still under investigation.",
     isAIGenerated: true
   };
 

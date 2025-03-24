@@ -74,9 +74,24 @@
     
     <div>
       <span class="font-medium">Rewritten Headline:</span>
-      <p class="mt-1 p-2 bg-gray-100 rounded-md">{results.rewritten_headline}</p>
+      <h3 class="mt-1 p-2 bg-gray-100 rounded-md text-lg font-bold">{results.rewritten_headline}</h3>
+    </div>
+    <div class="mb-4 p-4 rounded-md bg-gray-100">
+      <span class="font-medium">What's the difference?:</span>
+      <ol class="list-decimal list-inside">
+        <li>
+          Missing subject: The original headine does not mention all parties involved in the crash.
+          
+        </li>
+        <li>
+          Who are they? The original headline does not mention them as humans (e.g. "a man/woman/child"), rather than their vehicles (e.g. "a cyclist/motorcyclist/pedestrian").
+        </li>
+
+      </ol>
     </div>
   </div>
+
+  
 {/if}
 
 <div class="my-8 p-4 rounded-md bg-gray-100">
