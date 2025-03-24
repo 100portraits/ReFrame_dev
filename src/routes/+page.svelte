@@ -24,7 +24,7 @@
       // Mock response - this will be replaced with actual API integration
       results = {
         humanization_score: 0,
-        rewritten_headline: "Cyclist Killed in Collision on Highway 26"
+        rewritten_headline: "Driver hits and severely injures elderly woman in Los Angeles hit-and-run"
       };
     } catch (err) {
       error = 'Error analyzing article. Please try again.';
@@ -41,7 +41,7 @@
   <h2 class="mb-3">Curious about crash reporting?</h2>
 </div>
 
-<div class="mb-6">
+<div class="mb-1">
   <label for="article" class="block mb-2 font-medium">Crash report with headline:</label>
   <textarea
     id="article"
@@ -73,8 +73,8 @@
     </div>
     
     <div>
-      <span class="font-medium">Rewritten Headline:</span>
-      <h3 class="mt-1 p-2 bg-gray-100 rounded-md text-lg font-bold">{results.rewritten_headline}</h3>
+      <span class="font-medium mb-2">Rewritten Headline:</span>
+      <h3 class="my-2 p-2 bg-gray-100 rounded-md text-2xl font-bold">{results.rewritten_headline}</h3>
     </div>
     <div class="mb-4 p-4 rounded-md bg-gray-100">
       <span class="font-medium">What's the difference?:</span>
