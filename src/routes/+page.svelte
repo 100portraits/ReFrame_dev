@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-
+  import { VITE_OPENROUTER_API_KEY } from '$env/static/private';
   let article = '';
   let loading = false;
   let results = null;
@@ -11,8 +11,8 @@
   onMount(async () => {
     // In development, we should load from .env file
     // In production (Cloudflare Pages), it will be injected as an environment variable
-    if (import.meta.env.VITE_OPENROUTER_API_KEY) {
-      apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
+    if (VITE_OPENROUTER_API_KEY) {
+      apiKey = VITE_OPENROUTER_API_KEY;
     } else {
       console.error('API key not found in environment variables');
     }
