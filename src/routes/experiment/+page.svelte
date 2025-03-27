@@ -111,63 +111,110 @@
   }
 </script>
 
-<div class="container mx-auto p-4 max-w-4xl">
-  {#if !submitted}
-    {#if article}
-      <div class="mb-8 p-6 border border-gray-300 rounded-lg shadow-sm">
-        <h2 class="lg:text-6xl text-4xl font-bold mb-4">{article.title}</h2>
-        <p class="mb-6 text-gray-700">{article.content}</p>
-      </div>
-
-      <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 mb-6">
-        {#each surveyQuestions as question, i}
-          <div class="mb-8">
-            <p class="font-medium mb-8">{question.text}</p>
-            <div class="grid grid-cols-5 gap-2 text-center text-sm">
-              {#each likertOptions as option, index}
-                <div>
-                  <label class="flex flex-col items-center cursor-pointer">
-                    <input 
-                      type="radio" 
-                      name={`question-${question.id}`} 
-                      value={index} 
-                      on:change={() => updateAnswer(question.id, index)}
-                      class="mb-1 accent-gray-600"
-                    />
-                    <span>{option}</span>
-                  </label>
-                </div>
-              {/each}
-            </div>
+<div class="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-5xl mx-auto">
+    <!-- Header -->
+    {#if !submitted}
+      {#if article}
+        <!-- Article Card -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-12">
+          <div class="bg-indigo-700 px-8 py-6">
+            <h2 class="text-4xl font-bold text-white leading-tight">{article.title}</h2>
           </div>
-          {#if i !== surveyQuestions.length - 1}
-            <hr class="mb-4 border-gray-300">
-          {/if}
-        {/each}
+          <div class="p-8">
+            <p class="text-xl leading-relaxed text-gray-700">{article.content}</p>
+          </div>
+        </div>
 
-        <button 
-          on:click={submitSurvey} 
-          class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 mt-4"
-        >
-          Submit Responses
-        </button>
-      </div>
+        <!-- Survey Section -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 mb-12">
+          <h3 class="text-2xl font-bold text-gray-800 mb-8">Your Perspective</h3>
+          <p class="text-lg text-gray-600 mb-8">Please indicate how much you agree or disagree with each statement:</p>
+          
+          <div class="space-y-12">
+            {#each surveyQuestions as question, i}
+              <div class="border-b border-gray-200 pb-10 {i === surveyQuestions.length - 1 ? 'border-b-0' : ''}">
+                <p class="text-xl font-medium text-gray-800 mb-6">{question.text}</p>
+                <div class="grid grid-cols-5 gap-4">
+                  {#each likertOptions as option, index}
+                    <div class="relative">
+                      <label class="flex flex-col items-center cursor-pointer group">
+                        <input 
+                          type="radio" 
+                          name={`question-${question.id}`} 
+                          value={index} 
+                          on:change={() => updateAnswer(question.id, index)}
+                          class="sr-only peer"
+                        />
+                        <div class="w-full h-12 bg-gray-100 rounded-lg flex items-center justify-center peer-checked:bg-indigo-600 peer-checked:text-white peer-hover:bg-indigo-100 peer-checked:peer-hover:bg-indigo-700 transition-all">
+                          <span class="text-sm font-medium">{option}</span>
+                        </div>
+                      </label>
+                    </div>
+                  {/each}
+                </div>
+              </div>
+            {/each}
+          </div>
+
+          <div class="mt-12 flex justify-center">
+            <button 
+              on:click={submitSurvey} 
+              class="px-8 py-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white text-xl font-semibold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all"
+            >
+              Submit Responses
+            </button>
+          </div>
+        </div>
+      {:else}
+        <div class="bg-white rounded-2xl shadow-xl p-16 flex justify-center items-center">
+          <div class="flex flex-col items-center">
+            <svg class="animate-spin h-12 w-12 text-indigo-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p class="text-xl text-indigo-800 font-medium">Loading your article...</p>
+          </div>
+        </div>
+      {/if}
     {:else}
-      <div class="flex justify-center items-center h-32">
-        <p>Loading...</p>
+      <!-- Thank You Screen -->
+      <div class="bg-white rounded-2xl shadow-xl p-8 mb-12">
+        <div class="p-8 rounded-xl bg-green-50 border-2 border-green-200 mb-8">
+          <h3 class="text-3xl font-bold text-green-800 mb-4">Thank you for participating!</h3>
+          <div class="text-xl text-green-700">
+            <p>Your responses have been recorded.</p>
+          </div>
+        </div>
+        
+        <div class="space-y-8 text-lg">
+          <h3 class="text-3xl font-bold text-gray-800 mb-6">About This Experiment</h3>
+          <p>This experiment is designed to measure how the language used in crash reporting affects our perception of road safety.</p>
+          <p>We're testing whether editorial choices in headlines influence how readers assign responsibility and understand road danger.</p>
+          
+          <div class="mt-10 flex justify-center">
+            <button 
+              on:click={goToHeadlineRewriter} 
+              class="px-8 py-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white text-xl font-semibold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all"
+            >
+              Try the Headline Rewriter
+            </button>
+          </div>
+        </div>
       </div>
     {/if}
-  {:else}
-    <div class="bg-green-50 p-6 rounded-lg border border-green-200 mb-6">
-      <h3 class="text-xl font-bold text-green-700 mb-3">Thank you for responding.</h3>
-      <h3 class="text-3xl font-bold mb-3">What is this?</h3>
-      <p class="mb-6">This experiment aims to measure how editorial choices in crash reporting affect the way we think about road danger.</p>
-      <button 
-        on:click={goToHeadlineRewriter} 
-        class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
-      >
-        ReFrame (and about our experiment)
-      </button>
-    </div>
-  {/if}
+  </div>
 </div>
+
+<style>
+  /* Custom hover effects */
+  button {
+    transition: all 0.2s ease;
+  }
+  
+  /* Smoother transitions for interactive elements */
+  input[type="radio"] + div,
+  button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+</style>
