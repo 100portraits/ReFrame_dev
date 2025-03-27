@@ -1,7 +1,8 @@
-import { VITE_OPENROUTER_API_KEY } from '$env/static/private';
+// This file can now be empty or contain other server-side load functions
+// We don't need to pass the API key to the client anymore
 
 export function load() {
   return {
-    apiKey: VITE_OPENROUTER_API_KEY || ''
+    // Return any other data needed by the page if necessary
   };
 } 
