@@ -235,20 +235,7 @@
           responsive: true,
           plugins: {
             title: {
-              display: true,
-              text: `Q${stat.questionId}: ${stat.questionText || questions.find(q => q.id === stat.questionId)?.text}`,
-              font: {
-                size: 14
-              },
-              padding: {
-                top: 10,
-                bottom: 20
-              },
-              fullSize: true,
-              color: '#333',
-              align: 'start',
-              position: 'top',
-              lineWidth: window.innerWidth <= 768 ? 300 : 500
+              display: false,
             },
             tooltip: {
               callbacks: {
@@ -458,8 +445,13 @@
             <p class="text-md mb-8">Your responses are highlighted with a gold dot.</p>
             <div class="grid gap-10">
               {#each surveyStats.questionStats as stat}
-                <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm chart-container">
-                  <canvas id={`chart-q${stat.questionId}`} width="400" height="300"></canvas>
+                <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                  <h4 class="text-lg font-medium text-gray-800 mb-6 chart-title">
+                    Q{stat.questionId}: {stat.questionText || questions.find(q => q.id === stat.questionId)?.text}
+                  </h4>
+                  <div class="chart-container">
+                    <canvas id={`chart-q${stat.questionId}`} width="400" height="300"></canvas>
+                  </div>
                 </div>
               {/each}
             </div>
@@ -517,19 +509,28 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
+  /* Chart title styles */
+  .chart-title {
+    line-height: 1.4;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+
   /* Chart container styles */
   .chart-container {
     position: relative;
-    height: 350px; /* Fixed minimum height for charts */
+    height: 300px; /* Fixed minimum height for charts */
     width: 100%;
-    padding-top: 20px; /* Add some padding at the top for title space */
   }
   
-  /* On mobile, make charts taller to accommodate wrapped titles */
+  /* On mobile, make charts taller */
   @media (max-width: 768px) {
     .chart-container {
-      height: 450px;
-      padding-top: 30px; /* More padding on mobile for wrapped titles */
+      height: 350px;
+    }
+    
+    .chart-title {
+      font-size: 1rem;
     }
   }
 
