@@ -1,12 +1,12 @@
-// Import Firebase client SDK
-import { db, collection, addDoc, serverTimestamp } from '$lib/firebase';
+// Import Firestore REST API endpoint
+import { firestoreBaseUrl, addApiKey } from '$lib/firebase';
 import { json } from '@sveltejs/kit';
 
 /**
  * POST handler for survey submission
- * This runs server-side but uses the client SDK
+ * This uses direct Firestore REST API calls instead of Firebase SDK
  */
-export async function POST({ request }) {
+export async function POST({ request, fetch }) {
   try {
     // Parse the request body
     const surveyData = await request.json();
@@ -75,14 +75,68 @@ export async function POST({ request }) {
     // Add server timestamp
     surveyData.serverTimestamp = new Date().toISOString();
     
-    // Add the document to Firestore using client SDK
-    const surveyCollection = collection(db, 'surveyResponses');
-    const docRef = await addDoc(surveyCollection, surveyData);
+    // Convert the data to Firestore format (each field needs a type)
+    const firestoreData = {};
+    
+    // Convert flat fields
+    for (const [key, value] of Object.entries(surveyData)) {
+      if (key !== 'responses') {
+        if (typeof value === 'string') {
+          firestoreData[key] = { stringValue: value };
+        } else if (typeof value === 'number') {
+          firestoreData[key] = { integerValue: value };
+        } else if (typeof value === 'boolean') {
+          firestoreData[key] = { booleanValue: value };
+        }
+      }
+    }
+    
+    // Convert responses array
+    firestoreData.responses = {
+      arrayValue: {
+        values: surveyData.responses.map(response => ({
+          mapValue: {
+            fields: {
+              questionId: { integerValue: response.questionId },
+              questionText: { stringValue: response.questionText },
+              answer: { integerValue: response.answer }
+            }
+          }
+        }))
+      }
+    };
+    
+    // The payload for Firestore REST API
+    const payload = {
+      fields: firestoreData
+    };
+    
+    // Make the request to Firestore REST API with API key
+    const response = await fetch(addApiKey(`${firestoreBaseUrl}/surveyResponses`), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Firestore API error:', errorData);
+      return json({ error: 'Failed to save to database' }, { status: 500 });
+    }
+    
+    const responseData = await response.json();
+    
+    // Extract the document ID from the response name
+    // The name format is: projects/{project_id}/databases/(default)/documents/surveyResponses/{document_id}
+    const documentPath = responseData.name;
+    const documentId = documentPath.split('/').pop();
     
     // Return success response with document ID
     return json({ 
       success: true, 
-      documentId: docRef.id 
+      documentId: documentId
     });
   } catch (error) {
     console.error('Error submitting survey:', error);

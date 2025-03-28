@@ -1,22 +1,57 @@
-// Import Firebase client SDK
-import { db, collection, getDocs } from '$lib/firebase';
+// Import Firestore REST API endpoint
+import { firestoreBaseUrl, addApiKey } from '$lib/firebase';
 import { json } from '@sveltejs/kit';
 
 /**
  * GET handler for survey results summary
- * This runs server-side but uses the client SDK
+ * This uses direct Firestore REST API calls instead of Firebase SDK
  */
-export async function GET() {
+export async function GET({ fetch }) {
   try {
-    // Get all survey responses using client SDK
-    const surveyCollection = collection(db, 'surveyResponses');
-    const snapshot = await getDocs(surveyCollection);
+    // Use Firestore REST API to fetch all survey responses with API key
+    const response = await fetch(addApiKey(`${firestoreBaseUrl}/surveyResponses`));
     
-    // Process data for visualization
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Firestore API error:', errorData);
+      return json({ error: 'Failed to fetch data from database' }, { status: 500 });
+    }
+    
+    const data = await response.json();
+    
+    // Process data from Firestore format to our application format
     const responses = [];
-    snapshot.forEach((doc) => {
-      responses.push(doc.data());
-    });
+    
+    if (data.documents && Array.isArray(data.documents)) {
+      for (const doc of data.documents) {
+        // Convert from Firestore format to our application format
+        const fields = doc.fields;
+        const response = {};
+        
+        // Convert all fields
+        for (const [key, value] of Object.entries(fields)) {
+          if (key === 'responses') {
+            // Handle responses array
+            response.responses = value.arrayValue.values.map(item => {
+              const fields = item.mapValue.fields;
+              return {
+                questionId: parseInt(fields.questionId.integerValue),
+                questionText: fields.questionText.stringValue,
+                answer: parseInt(fields.answer.integerValue)
+              };
+            });
+          } else if (value.integerValue !== undefined) {
+            response[key] = parseInt(value.integerValue);
+          } else if (value.booleanValue !== undefined) {
+            response[key] = value.booleanValue;
+          } else if (value.stringValue !== undefined) {
+            response[key] = value.stringValue;
+          }
+        }
+        
+        responses.push(response);
+      }
+    }
     
     // Calculate statistics
     const rewrittenResponses = responses.filter(r => r.isRewritten);
@@ -45,7 +80,7 @@ export async function GET() {
     return json(stats);
   } catch (error) {
     console.error('Error fetching survey results:', error);
-    return json({ error: 'Server error' }, { status: 500 });
+    return json({ error: 'Server error: ' + error.message }, { status: 500 });
   }
 }
 
