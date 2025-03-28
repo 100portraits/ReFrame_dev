@@ -1,0 +1,8 @@
+[compatibility_flags]
+nodejs_compat = true
+
+[build]
+command = "npm run build"
+
+[site]
+bucket = "./build" 
