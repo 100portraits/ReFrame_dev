@@ -6,7 +6,11 @@
   let error = '';
 
   // Get data from the server-side load function
-  export let data;
+  export const data = async () => {
+    const response = await fetch('/api/summary');
+    const data = await response.json();
+    return data;
+  };  
 
   // Example article data
   const exampleArticles = [
