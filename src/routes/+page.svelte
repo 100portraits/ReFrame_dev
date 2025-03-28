@@ -217,7 +217,7 @@ In most cases, suspects in custody can be held for up to three days in detention
   }
 </script>
 
-<div class="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-50 py-22 px-4 sm:px-6 lg:px-8">
   <div class="max-w-5xl mx-auto">
     <!-- Header -->
     <div class="text-center mb-12">

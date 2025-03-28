@@ -7,8 +7,6 @@
         </a>
       </div>
       <div class="flex items-center space-x-6">
-        <a href="/" class="text-white  font-medium text-lg px-3 py-2 rounded-lg hover:bg-blue-800 transition-all">Headline Rewriter</a>
-        <a href="/experiment" class="text-white  font-medium text-lg px-3 py-2 rounded-lg hover:bg-blue-800 transition-all">Experiment</a>
       </div>
     </div>
   </div>
