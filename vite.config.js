@@ -8,7 +8,7 @@ export default defineConfig({
 		target: 'esnext'
 	},
 	ssr: {
-		noExternal: ['@google-cloud/*'],
+		noExternal: ['firebase', '@firebase/*'],
 		target: 'webworker'
 	},
 	define: {

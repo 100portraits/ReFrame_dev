@@ -1,6 +1,6 @@
-// Import Firebase admin SDK
-import { getFirestore } from 'firebase-admin/firestore';
-import { FB_ADMIN } from '$lib/server/firebase-admin';
+// Import client Firebase SDK
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '$lib/server/firebase-admin';
 import { json } from '@sveltejs/kit';
 
 /**
@@ -9,11 +9,9 @@ import { json } from '@sveltejs/kit';
  */
 export async function GET() {
   try {
-    // Get Firestore instance
-    const db = getFirestore(FB_ADMIN);
-    
-    // Get all survey responses
-    const snapshot = await db.collection('surveyResponses').get();
+    // Get all survey responses using client SDK
+    const surveyCollection = collection(db, 'surveyResponses');
+    const snapshot = await getDocs(surveyCollection);
     
     // Process data for visualization
     const responses = [];
