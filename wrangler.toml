@@ -5,7 +5,4 @@ nodejs_compat = true
 command = "npm run build"
 
 [pages]
-pages_build_output_dir = ".svelte-kit/cloudflare"
-
-[site]
-bucket = "./build" 
+pages_build_output_dir = ".svelte-kit/cloudflare" 
