@@ -241,9 +241,14 @@
                 size: 14
               },
               padding: {
-                bottom: 10
+                top: 10,
+                bottom: 20
               },
-              fullSize: true
+              fullSize: true,
+              color: '#333',
+              align: 'start',
+              position: 'top',
+              lineWidth: window.innerWidth <= 768 ? 300 : 500
             },
             tooltip: {
               callbacks: {
@@ -517,12 +522,14 @@
     position: relative;
     height: 350px; /* Fixed minimum height for charts */
     width: 100%;
+    padding-top: 20px; /* Add some padding at the top for title space */
   }
   
-  /* On mobile, make charts taller */
+  /* On mobile, make charts taller to accommodate wrapped titles */
   @media (max-width: 768px) {
     .chart-container {
-      height: 400px;
+      height: 450px;
+      padding-top: 30px; /* More padding on mobile for wrapped titles */
     }
   }
 
