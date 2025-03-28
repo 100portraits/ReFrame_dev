@@ -1,8 +1,6 @@
 <script>
 	import '../app.css';
-	let { children } = $props();
 	import Navbar from "$lib/components/Navbar.svelte";
 </script>
 
-
-{@render children()}
+<slot></slot>
