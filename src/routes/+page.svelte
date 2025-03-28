@@ -312,7 +312,7 @@ In most cases, suspects in custody can be held for up to three days in detention
             
             <!-- Score and Assessment -->
             <div class="flex flex-col md:flex-row gap-6">
-              <div class="flex-shrink-0">
+              <div class="flex-shrink-0 flex flex-col items-center md:items-start">
                 <div class="rounded-full w-24 h-24 flex items-center justify-center border-4 border-indigo-100 bg-white">
                   <div class="text-center">
                     <span class="block text-3xl font-bold text-indigo-600">{results.original_criteria_met}</span>
@@ -321,7 +321,6 @@ In most cases, suspects in custody can be held for up to three days in detention
                 </div>
                 <p class="text-center mt-2 text-sm font-medium text-gray-600">Humanization<br>Score</p>
               </div>
-              
               {#if results.assessment}
                 <div class="flex-grow p-6 rounded-xl bg-indigo-50 border-2 border-indigo-100">
                   <h4 class="font-bold text-indigo-800 mb-4">Assessment</h4>

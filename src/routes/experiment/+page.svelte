@@ -221,6 +221,8 @@
           ]
         },
         options: {
+          maintainAspectRatio: false,
+          aspectRatio: 1.5,
           scales: {
             y: {
               beginAtZero: true,
@@ -241,7 +243,6 @@
               padding: {
                 bottom: 10
               },
-              // Allow the title to wrap onto multiple lines
               fullSize: true
             },
             tooltip: {
@@ -452,8 +453,8 @@
             <p class="text-md mb-8">Your responses are highlighted with a gold dot.</p>
             <div class="grid gap-10">
               {#each surveyStats.questionStats as stat}
-                <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-                  <canvas id={`chart-q${stat.questionId}`} width="400" height="200"></canvas>
+                <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm chart-container">
+                  <canvas id={`chart-q${stat.questionId}`} width="400" height="300"></canvas>
                 </div>
               {/each}
             </div>
@@ -512,8 +513,20 @@
   }
 
   /* Chart container styles */
+  .chart-container {
+    position: relative;
+    height: 350px; /* Fixed minimum height for charts */
+    width: 100%;
+  }
+  
+  /* On mobile, make charts taller */
+  @media (max-width: 768px) {
+    .chart-container {
+      height: 400px;
+    }
+  }
+
   canvas {
     width: 100% !important;
-    max-height: 300px !important;
   }
 </style>
