@@ -6,3 +6,6 @@ command = "npm run build"
 
 pages_build_output_dir = ".svelte-kit/cloudflare" 
 
+node_compat = true
+node_version = "18.18.0"
+
