@@ -1,11 +1,10 @@
-// Import Firebase admin SDK
-import { getFirestore } from 'firebase-admin/firestore';
-import { FB_ADMIN } from '$lib/server/firebase-admin';
+// Import Firebase client SDK
+import { db, collection, addDoc, serverTimestamp } from '$lib/firebase';
 import { json } from '@sveltejs/kit';
 
 /**
  * POST handler for survey submission
- * This runs server-side for better security
+ * This runs server-side but uses the client SDK
  */
 export async function POST({ request }) {
   try {
@@ -76,11 +75,9 @@ export async function POST({ request }) {
     // Add server timestamp
     surveyData.serverTimestamp = new Date().toISOString();
     
-    // Get Firestore instance
-    const db = getFirestore(FB_ADMIN);
-    
-    // Add the document to Firestore
-    const docRef = await db.collection('surveyResponses').add(surveyData);
+    // Add the document to Firestore using client SDK
+    const surveyCollection = collection(db, 'surveyResponses');
+    const docRef = await addDoc(surveyCollection, surveyData);
     
     // Return success response with document ID
     return json({ 

@@ -8,8 +8,7 @@ export default defineConfig({
 		target: 'esnext'
 	},
 	ssr: {
-		noExternal: ['firebase-admin', '@firebase/*', '@google-cloud/*'],
-		target: 'node'
+		noExternal: ['firebase', '@firebase/firestore', '@firebase/analytics', '@firebase/app']
 	},
 	define: {
 		'process.env.NODE_DEBUG': 'false',

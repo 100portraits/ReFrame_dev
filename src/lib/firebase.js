@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from 'firebase/firestore';
 import { getAnalytics } from 'firebase/analytics';
 
 // Your web app's Firebase configuration
@@ -25,4 +25,4 @@ if (typeof window !== 'undefined') {
   analytics = getAnalytics(app);
 }
 
-export { app, db, analytics }; 
+export { app, db, analytics, collection, addDoc, getDocs, query, where, serverTimestamp }; 
