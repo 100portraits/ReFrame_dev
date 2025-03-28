@@ -8,10 +8,11 @@ export default defineConfig({
 		target: 'esnext'
 	},
 	ssr: {
-		noExternal: ['@google-cloud/*'],
-		target: 'webworker'
+		noExternal: ['firebase-admin', '@firebase/*', '@google-cloud/*'],
+		target: 'node'
 	},
 	define: {
-		'process.env.NODE_DEBUG': 'false'
+		'process.env.NODE_DEBUG': 'false',
+		'global.process.env.NODE_DEBUG': 'false'
 	}
 });
