@@ -1,9 +1,16 @@
 <script>
   import { onMount } from 'svelte';
+  import html2canvas from 'html2canvas-pro';
+  import { writable } from 'svelte/store';
+
   let article = '';
   let loading = false;
   let results = null;
   let error = '';
+
+  // State for sharing
+  let generatedImageUrl = writable(null);
+  let showImagePreview = writable(false);
 
   // Get data from the server-side load function
   export const data = async () => {
@@ -95,8 +102,13 @@ In most cases, suspects in custody can be held for up to three days in detention
       return;
     }
 
+    // Reset share image state before starting new analysis
+    showImagePreview.set(false);
+    generatedImageUrl.set(null);
+
     loading = true;
     error = '';
+    results = null; // Also reset results explicitly here for clarity
     
     try {
       // Extract headline from article (assuming first line is headline)
@@ -219,18 +231,56 @@ In most cases, suspects in custody can be held for up to three days in detention
       loading = false;
     }
   }
+
+  // Function to generate the share image
+  async function generateShareImage() {
+    showImagePreview.set(false);
+    generatedImageUrl.set(null);
+    const elementToCapture = document.getElementById('image-render-source');
+    
+    if (elementToCapture) {
+      try {
+        const canvas = await html2canvas(elementToCapture, {
+          backgroundColor: '#ffffff',
+          scale: 2
+        });
+        const imageUrl = canvas.toDataURL('image/png');
+        generatedImageUrl.set(imageUrl);
+        showImagePreview.set(true);
+      } catch (err) {
+        console.error('Error generating share image:', err);
+        error = 'Could not generate share image. Please try again.';
+      }
+    } else {
+      console.error('Shareable content element not found');
+      error = 'Could not find content to share.';
+    }
+  }
+
+  // Function to download the generated image
+  function downloadImage() {
+    const url = $generatedImageUrl;
+    if (!url) return;
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'reframe-headline.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 </script>
 
-<div class="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-50 py-22 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-white py-22 px-4 sm:px-6 lg:px-8">
   <div class="max-w-5xl mx-auto">
     <!-- Header -->
     <div class="text-center mb-12">
-      <h1 class="text-7xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent drop-shadow-sm">ReFrame</h1>
-      <p class="mt-4 text-xl text-indigo-900 font-medium">Humanizing crash headlines for more accurate reporting</p>
+      <h1 class="text-7xl font-bold text-black">ReFrame</h1>
+      <p class="mt-4 text-xl text-black font-medium">Humanizing crash headlines for more accurate reporting</p>
     </div>
 
     <!-- Main Content -->
-    <div class="bg-white rounded-2xl shadow-xl p-8 mb-12">
+    <div class="bg-white border border-black p-8 mb-12">
       
       <!-- Example Articles -->
       <div class="mb-8">
@@ -239,35 +289,34 @@ In most cases, suspects in custody can be held for up to three days in detention
           {#each exampleArticles as example, i}
             <button 
               on:click={() => selectExample(i)}
-              class="p-4 flex flex-col text-left rounded-xl transition-all hover:scale-102 hover:shadow-md border-2 border-transparent hover:border-blue-400"
-              style="background: linear-gradient(to bottom right, #EEF2FF, #E0E7FF);"
+              class="p-4 flex flex-col text-left border border-black transition-all hover:bg-red-700 hover:text-white hover:border-red-700"
             >
-              <span class="text-xs uppercase tracking-wide text-indigo-600 font-semibold mb-2">{example.source}</span>
-              <span class="font-bold text-gray-800">{example.title}</span>
+              <span class="text-xs uppercase tracking-wide font-semibold mb-2">{example.source}</span>
+              <span class="font-bold">{example.title}</span>
             </button>
           {/each}
         </div>
         
         <!-- Article Input -->
         <div class="mb-6">
-          <label for="article" class="block text-lg font-medium text-gray-700 mb-3">Crash report with headline:</label>
+          <label for="article" class="block text-lg font-medium text-black mb-3">Crash report with headline:</label>
           <textarea
             id="article"
             bind:value={article}
             placeholder="Paste your article here or select an example above..."
-            class="w-full h-48 p-4 text-lg border-2 border-indigo-100 rounded-xl focus:border-indigo-400 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition-all"
+            class="w-full h-48 p-4 text-lg border border-black focus:outline-none transition-all"
           ></textarea>
         </div>
         
         <!-- Submit Button -->
         <button 
           on:click={analyzeArticle}
-          class="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white text-lg font-semibold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+          class="w-full md:w-auto px-8 py-4 bg-black text-white text-lg font-semibold border border-black hover:bg-white hover:text-red-700 hover:border-red-700 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
           disabled={loading}
         >
           {#if loading}
             <span class="flex items-center justify-center">
-              <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
@@ -280,7 +329,7 @@ In most cases, suspects in custody can be held for up to three days in detention
 
         <!-- Error Message -->
         {#if error}
-          <div class="mt-4 p-4 bg-red-100 border border-red-300 text-red-700 rounded-xl">
+          <div class="mt-4 p-4 border border-red-500 text-red-700">
             {error}
           </div>
         {/if}
@@ -290,42 +339,42 @@ In most cases, suspects in custody can be held for up to three days in detention
     <!-- Results Section -->
     {#if results}
       {#if results.is_crash_article === false}
-        <div class="bg-white rounded-2xl shadow-xl p-8 mb-12">
-          <div class="p-6 rounded-xl bg-yellow-50 border-2 border-yellow-200">
-            <h3 class="text-2xl font-bold text-yellow-800 mb-4">Not a Traffic Crash Article</h3>
-            <div class="mb-6 text-lg text-yellow-700">
+        <div class="bg-white border border-black p-8 mb-12">
+          <div class="p-6 border border-black">
+            <h3 class="text-2xl font-bold text-black mb-4">Not a Traffic Crash Article</h3>
+            <div class="mb-6 text-lg">
               <p>{results.explanation}</p>
             </div>
-            <div class="p-4 bg-white rounded-lg border border-yellow-200 font-medium text-gray-700">
+            <div class="p-4 border border-black font-medium">
               <p>{results.suggestion}</p>
             </div>
           </div>
         </div>
       {:else}
-        <div class="bg-white rounded-2xl shadow-xl p-8 mb-12">
+        <div class="bg-white border border-black p-8 mb-12">
           <!-- Original Headline Section -->
           <div class="mb-10">
-            <h3 class="text-2xl font-bold text-gray-800 mb-6">Original Headline</h3>
-            <div class="p-6 rounded-xl bg-gray-50 border-2 border-gray-200 mb-6">
-              <h4 class="text-xl font-semibold text-gray-800">{results.original_headline}</h4>
+            <h3 class="text-2xl font-bold text-red-700 mb-6">Original Headline</h3>
+            <div class="p-6 border border-black mb-6">
+              <h4 class="text-xl font-semibold text-black">{results.original_headline}</h4>
             </div>
             
             <!-- Score and Assessment -->
             <div class="flex flex-col md:flex-row gap-6">
               <div class="flex-shrink-0 flex flex-col items-center md:items-start">
-                <div class="rounded-full w-24 h-24 flex items-center justify-center border-4 border-indigo-100 bg-white">
+                <div class="w-24 h-24 flex items-center justify-center border-2 border-red-700 bg-white">
                   <div class="text-center">
-                    <span class="block text-3xl font-bold text-indigo-600">{results.original_criteria_met}</span>
+                    <span class="block text-3xl font-bold text-red-700">{results.original_criteria_met}</span>
                     <span class="block text-sm text-gray-500">of 4</span>
                   </div>
                 </div>
                 <p class="text-center mt-2 text-sm font-medium text-gray-600">Humanization<br>Score</p>
               </div>
               {#if results.assessment}
-                <div class="flex-grow p-6 rounded-xl bg-indigo-50 border-2 border-indigo-100">
-                  <h4 class="font-bold text-indigo-800 mb-4">Assessment</h4>
+                <div class="flex-grow p-6 border border-red-700">
+                  <h4 class="font-bold text-red-800 mb-4">Assessment</h4>
                   <div class="text-gray-700 assessment-text">
-                    {@html results.assessment.replace(/\n/g, '<br>').replace(/\*\*([^*]+)\*\*/g, '<strong class="text-indigo-700">$1</strong>')}
+                    {@html results.assessment.replace(/\n/g, '<br>').replace(/\*\*([^*]+)\*\*/g, '<strong class="text-red-700">$1</strong>')}
                   </div>
                 </div>
               {/if}
@@ -334,28 +383,88 @@ In most cases, suspects in custody can be held for up to three days in detention
           
           <!-- Improved Headline Section -->
           <div class="mb-6">
-            <h3 class="text-2xl font-bold text-gray-800 mb-6">Improved Headline</h3>
-            <div class="p-6 rounded-xl bg-green-50 border-2 border-green-200 mb-6">
-              <h4 class="text-2xl font-bold text-green-800">{results.rewritten_headline}</h4>
+            <h3 class="text-2xl font-bold text-black mb-6">Improved Headline</h3>
+            <div class="p-6 border border-black mb-6">
+              <h4 class="text-2xl font-bold text-black">{results.rewritten_headline}</h4>
             </div>
             
-            <div class="p-6 rounded-xl bg-blue-50 border-2 border-blue-100">
-              <h4 class="font-bold text-blue-800 mb-4">What's the difference?</h4>
+            <div class="p-6 border border-black">
+              <h4 class="font-bold text-black mb-4">What's the difference?</h4>
               <div class="text-gray-700 explanation-text">
-                {@html results.explanation.replace(/\n/g, '<br>').replace(/\*\*([^*]+)\*\*/g, '<strong class="text-blue-700">$1</strong>')}
+                {@html results.explanation.replace(/\n/g, '<br>').replace(/\*\*([^*]+)\*\*/g, '<strong class="text-black">$1</strong>')}
               </div>
             </div>
+
+            <!-- Share Button - Hide when preview is shown -->
+            {#if !$showImagePreview}
+              <div class="mt-6 text-center">
+                <button 
+                  on:click={generateShareImage}
+                  class="px-6 py-3 bg-black text-white font-semibold border border-black hover:bg-white hover:text-black transition-all"
+                >
+                  Share Improved Headline
+                </button>
+              </div>
+            {/if}
+
+            <!-- Image Preview and Download -->
+            {#if $showImagePreview && $generatedImageUrl}
+              <div class="mt-8">
+                <img src={$generatedImageUrl} alt="Generated headline comparison" class="max-w-full h-auto mx-auto border border-gray-300 mb-4" />
+                <div class="text-center">
+                  <button 
+                    on:click={downloadImage}
+                    class="px-6 py-3 bg-green-600 text-white font-semibold border border-green-600 hover:bg-green-700 transition-all"
+                  >
+                    Download Image
+                  </button>
+                </div>
+              </div>
+            {/if}
           </div>
+        </div>
+
+        <!-- Hidden div for rendering the share image -->
+        <div 
+          id="image-render-source" 
+          class="fixed left-[-9999px] top-[-9999px] w-[800px] bg-white border border-black p-8 font-sans"
+        >
+          <!-- Add Title and Subtitle -->
+          <div class="text-center mb-6">
+            <h1 class="text-3xl font-bold text-black">ReFrame</h1>
+            <p class="mt-1 text-base text-gray-600">Humanizing crash headlines for more accurate reporting</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-6">
+            <!-- Left Column: Original -->
+            <div class="bg-gray-100 p-6 border border-gray-300 rounded">
+              <h3 class="text-xl font-bold text-red-700 mb-4">Original Headline</h3>
+              <p class="text-lg text-black">{results.original_headline}</p>
+            </div>
+            <!-- Right Column: Humanized -->
+            <div class="bg-white p-6 border border-gray-300 rounded">
+              <h3 class="text-xl font-bold text-black mb-4">Humanized Headline</h3>
+              <p class="text-lg text-black">{results.rewritten_headline}</p>
+            </div>
+          </div>
+
         </div>
       {/if}
     {/if}
 
     <!-- About Section -->
-    <div class="bg-indigo-800 text-white rounded-2xl shadow-xl p-8">
+    <div class="bg-white border border-black p-8">
       <h2 class="text-2xl font-bold mb-4">About ReFrame</h2>
       <div class="space-y-4 text-lg">
         <p>ReFrame is part of a research project at the University of Amsterdam exploring how language shapes our perception of road safety.</p>
-        <p class="pt-4"><a href="/experiment" class="inline-block px-6 py-3 bg-white text-indigo-800 font-bold rounded-lg hover:bg-indigo-100 transition-colors">Participate in our experiment</a></p>
+        <p class="pt-4">
+          <a 
+            href="/experiment" 
+            class="inline-block px-6 py-3 bg-black text-white font-bold border border-black hover:bg-red-700 hover:border-red-700 transition-all"
+          >
+            Participate in our experiment
+          </a>
+        </p>
       </div>
     </div>
   </div>
@@ -367,13 +476,20 @@ In most cases, suspects in custody can be held for up to three days in detention
     font-weight: 600;
   }
   
-  /* Add subtle hover effect for buttons */
-  button {
+  /* Smoother transitions for interactive elements */
+  button, a { /* Apply transition to links as well */
     transition: all 0.2s ease;
   }
-  
-  /* Custom scaling on hover */
-  .hover\:scale-102:hover {
-    transform: scale(1.02);
+
+  /* Ensure the capture div doesn't affect layout */
+  #shareable-content {
+    /* Add padding/margin reset if needed, but the wrapper div seems okay */
+    /* This ID is no longer used for capture, can be removed or styles cleared */
+  }
+
+  /* Styles for the hidden render source */
+  #image-render-source {
+    /* Ensures fonts load if needed, using a common sans-serif */
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   }
 </style>

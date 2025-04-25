@@ -16,6 +16,8 @@ If it IS about a traffic crash, you will rewrite the news headline to make it mo
 3. Make a human the grammatical subject of the sentence
 4. Use active voice that clearly shows who did what to whom
 
+The rewritten headline should be in the same language as the original headline (e.g. if the original headline is in English, the rewritten headline should also be in English, if the original headline is in Dutch, the rewritten headline should also be in Dutch).
+
 If it is NOT about a traffic crash, simply respond with the format shown in the "Not a Crash Article" section below.
 
 ## Article Information

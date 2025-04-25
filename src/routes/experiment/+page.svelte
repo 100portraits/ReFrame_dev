@@ -192,81 +192,89 @@
       // Find user's answer for this question
       const userAnswer = surveyQuestions.find(q => q.id === stat.questionId)?.answer;
 
-      // Find max value to set y axis scale with margin
-      const maxRewritten = Math.max(...stat.rewrittenDistribution);
-      const maxOriginal = Math.max(...stat.originalDistribution);
-      const maxValue = Math.max(maxRewritten, maxOriginal);
-      const yAxisMax = Math.ceil(maxValue * 1.15); // Add 15% margin above highest bar
-      
       // Create chart
       const chart = new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: likertOptions,
-          datasets: [
-            {
-              label: 'Rewritten Text',
-              data: stat.rewrittenDistribution,
-              backgroundColor: 'rgba(54, 162, 235, 0.6)',
-              borderColor: 'rgba(54, 162, 235, 1)',
-              borderWidth: 1
-            },
-            {
-              label: 'Original Text',
-              data: stat.originalDistribution,
-              backgroundColor: 'rgba(255, 99, 132, 0.6)',
-              borderColor: 'rgba(255, 99, 132, 1)',
-              borderWidth: 1
-            }
-          ]
+          labels: ['Original Text', 'Rewritten Text'],
+          datasets: likertOptions.map((option, index) => ({
+            label: option,
+            data: [
+              stat.originalDistribution[index],
+              stat.rewrittenDistribution[index]
+            ],
+            backgroundColor: `rgba(0, 0, 0, ${0.2 + (index * 0.2)})`,
+            borderColor: '#000000',
+            borderWidth: 1
+          }))
         },
         options: {
+          indexAxis: 'y', // This makes the bars horizontal
           maintainAspectRatio: false,
-          aspectRatio: 1.5,
           scales: {
-            y: {
-              beginAtZero: true,
-              max: yAxisMax,
+            x: {
+              stacked: true,
+              grid: {
+                color: 'rgba(0, 0, 0, 0.1)',
+              },
               ticks: {
                 precision: 0
+              }
+            },
+            y: {
+              stacked: true,
+              grid: {
+                display: false
               }
             }
           },
           responsive: true,
           plugins: {
             title: {
-              display: false,
+              display: false
             },
             tooltip: {
               callbacks: {
                 title: function(context) {
-                  return likertOptions[context[0].dataIndex];
+                  return context[0].dataset.label;
                 },
                 label: function(context) {
-                  return `${context.dataset.label}: ${context.raw} responses`;
+                  const label = context.chart.data.labels[context.dataIndex];
+                  return `${label}: ${context.raw} responses`;
                 }
               }
             },
-            annotation: {
-              annotations: userAnswer !== null ? {
+            legend: {
+              position: 'bottom',
+              labels: {
+                padding: 20,
+                font: {
+                  size: 12
+                }
+              }
+            },
+            annotation: userAnswer !== null ? {
+              annotations: {
                 point: {
                   type: 'point',
-                  xValue: userAnswer,
-                  yValue: article.isRewritten ? 
-                    stat.rewrittenDistribution[userAnswer] : 
-                    stat.originalDistribution[userAnswer],
+                  xValue: article.isRewritten ? 
+                    stat.rewrittenDistribution.slice(0, userAnswer).reduce((a, b) => a + b, 0) + 
+                    stat.rewrittenDistribution[userAnswer] / 2 :
+                    stat.originalDistribution.slice(0, userAnswer).reduce((a, b) => a + b, 0) + 
+                    stat.originalDistribution[userAnswer] / 2,
+                  yValue: article.isRewritten ? 1 : 0,
                   backgroundColor: 'rgba(255, 215, 0, 0.8)',
                   borderColor: 'gold',
                   borderWidth: 2,
-                  radius: 8,
+                  radius: 6,
                   label: {
                     content: 'Your answer',
                     enabled: true,
                     position: 'top'
                   }
                 }
-              } : {}
-            }
+              }
+            } : {}
           }
         }
       });
@@ -287,16 +295,16 @@
   }
 </script>
 
-<div class="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-50 pt-6 md:pt-12 lg:pt-22 pb-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-white pt-6 md:pt-12 lg:pt-22 pb-12 px-4 sm:px-6 lg:px-8">
   <div class="max-w-5xl mx-auto">
     <!-- Header -->
     {#if !submitted}
       {#if article}
         <!-- Article Card -->
-        <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-12">
-          <div class="bg-indigo-700 px-8 py-6">
+        <div class="bg-white border border-black overflow-hidden mb-12">
+          <div class="bg-black px-8 py-6">
             <h2 class="text-4xl font-bold text-white leading-tight">{article.title}</h2>
-            <div class="mt-2 flex items-center text-indigo-100 text-sm">
+            <div class="mt-2 flex items-center text-gray-200 text-sm">
               <span class="mr-4">📅 {new Date(article.date).toLocaleDateString()}</span>
               <span>📝 {article.wordCount} words</span>
             </div>
@@ -307,7 +315,7 @@
         </div>
 
         <!-- Survey Section -->
-        <div class="bg-white rounded-2xl shadow-xl p-8 mb-12">
+        <div class="bg-white border border-black p-8 mb-12">
           <h3 class="text-2xl font-bold text-gray-800 mb-8">How much do you agree with the following statements?</h3>
           
           <div class="space-y-12">
@@ -325,7 +333,7 @@
                           on:change={() => updateAnswer(question.id, index)}
                           class="sr-only peer"
                         />
-                        <div class="w-full h-12 bg-gray-100 rounded-lg flex items-center justify-center peer-checked:bg-indigo-600 peer-checked:text-white peer-hover:bg-indigo-100 peer-checked:peer-hover:bg-indigo-700 transition-all px-4">
+                        <div class="w-full h-12 bg-white border border-black flex items-center justify-center peer-checked:bg-black peer-checked:text-white peer-hover:bg-gray-50 peer-checked:peer-hover:bg-black transition-all px-4">
                           <span class="text-sm font-medium text-center">{option}</span>
                         </div>
                       </label>
@@ -337,7 +345,7 @@
           </div>
 
           {#if errorMessage}
-            <div class="mt-6 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
+            <div class="mt-6 bg-red-50 border border-red-500 text-red-800 px-4 py-3">
               <p class="font-medium">{errorMessage}</p>
             </div>
           {/if}
@@ -345,12 +353,12 @@
           <div class="mt-12 flex justify-center">
             <button 
               on:click={submitSurvey} 
-              class="px-8 py-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white text-xl font-semibold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all disabled:opacity-50"
+              class="px-8 py-4 bg-black text-white text-xl font-semibold border border-black hover:bg-white hover:text-black transition-all disabled:opacity-50"
               disabled={loading}
             >
               {#if loading}
                 <span class="flex items-center">
-                  <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
@@ -363,57 +371,57 @@
           </div>
         </div>
       {:else}
-        <div class="bg-white rounded-2xl shadow-xl p-16 flex justify-center items-center">
+        <div class="bg-white border border-black p-16 flex justify-center items-center">
           <div class="flex flex-col items-center">
-            <svg class="animate-spin h-12 w-12 text-indigo-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg class="animate-spin h-12 w-12 text-black mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            <p class="text-xl text-indigo-800 font-medium">Loading your article...</p>
+            <p class="text-xl text-gray-800 font-medium">Loading your article...</p>
           </div>
         </div>
       {/if}
     {:else}
       <!-- Results Visualization -->
-      <div class="bg-white rounded-2xl shadow-xl p-8 mb-12">
-        <div class="p-8 rounded-xl bg-white border-2 border-indigo-100 mb-8">
-          <h3 class="text-4xl font-bold bg-gradient-to-r {article.isRewritten ? 'from-indigo-600 to-blue-600' : 'from-red-600 to-orange-600'} bg-clip-text text-transparent mb-6">Thank you for participating!</h3>
+      <div class="bg-white border border-black p-8 mb-12">
+        <div class="p-8 bg-white border border-black mb-8">
+          <h3 class="text-4xl font-bold text-black mb-6">Thank you for participating!</h3>
           
           <div class="space-y-8">
             <div class="space-y-4">              
               <p class="text-xl">
                 {#if article.isRewritten}
-                  The article you read was <span class="font-semibold text-indigo-600">rewritten</span> by AI to address six key criteria for more accurate and human-centered crash reporting.
+                  The article you read was <span class="font-semibold">rewritten</span> by AI to address six key criteria for more accurate and human-centered crash reporting.
                 {:else}
-                  The article you read was the <span class="font-semibold text-red-600">original</span> text. However, half of participants were shown a version rewritten to meet six key criteria.
+                  The article you read was the <span class="font-semibold">original</span> text. However, half of participants were shown a version rewritten to meet six key criteria.
                 {/if}
               </p>
 
-              <details class="cursor-pointer bg-indigo-50 p-6 rounded-xl">
-                <summary class="text-lg font-semibold text-indigo-900">View the six key criteria for human-centered crash reporting</summary>
+              <details class="cursor-pointer bg-white border border-black p-6">
+                <summary class="text-lg font-semibold text-black">View the six key criteria for human-centered crash reporting</summary>
                 <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <p class="font-medium text-indigo-800">1. Comprehensive Coverage</p>
+                  <div class="bg-white p-4 border border-gray-200">
+                    <p class="font-medium text-black">1. Comprehensive Coverage</p>
                     <p class="text-gray-700 mt-1">Mentioning all involved parties in the crash</p>
                   </div>
-                  <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <p class="font-medium text-indigo-800">2. Human-First Language</p>
+                  <div class="bg-white p-4 border border-gray-200">
+                    <p class="font-medium text-black">2. Human-First Language</p>
                     <p class="text-gray-700 mt-1">Referring to parties as humans rather than transportation modes</p>
                   </div>
-                  <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <p class="font-medium text-indigo-800">3. Human Agency</p>
+                  <div class="bg-white p-4 border border-gray-200">
+                    <p class="font-medium text-black">3. Human Agency</p>
                     <p class="text-gray-700 mt-1">Making a human the grammatical subject</p>
                   </div>
-                  <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <p class="font-medium text-indigo-800">4. Clear Attribution</p>
+                  <div class="bg-white p-4 border border-gray-200">
+                    <p class="font-medium text-black">4. Clear Attribution</p>
                     <p class="text-gray-700 mt-1">Using active voice that clearly shows who did what to whom</p>
                   </div>
-                  <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <p class="font-medium text-indigo-800">5. Impact Focus</p>
+                  <div class="bg-white p-4 border border-gray-200">
+                    <p class="font-medium text-black">5. Impact Focus</p>
                     <p class="text-gray-700 mt-1">Including specific physical/psychological consequences</p>
                   </div>
-                  <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <p class="font-medium text-indigo-800">6. Broader Context</p>
+                  <div class="bg-white p-4 border border-gray-200">
+                    <p class="font-medium text-black">6. Broader Context</p>
                     <p class="text-gray-700 mt-1">Placing the crash in context of broader safety patterns</p>
                   </div>
                 </div>
@@ -423,7 +431,7 @@
                 The point of this experiment was to show how subtle changes to the text can affect how readers perceive road danger.  <br> <br>
               </p>
               <p class="text-xl">
-                Read more about our project <a href="/about" class="text-indigo-600 hover:text-indigo-800">here</a>.
+                Read more about our project <a href="/about" class="text-black underline hover:no-underline">here</a>.
               </p>
             </div>
           </div>
@@ -434,18 +442,18 @@
           
           {#if surveyStats}
             <div class="mb-10">
-              <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-200">
+              <div class="bg-white p-6 border border-black">
                 <p class="text-xl mb-2"><strong>Total responses:</strong> {surveyStats.totalResponses}</p>
                 <p class="text-xl mb-2"><strong>Rewritten text group:</strong> {surveyStats.rewrittenCount} participants</p>
                 <p class="text-xl"><strong>Original text group:</strong> {surveyStats.originalCount} participants</p>
               </div>
             </div>
             
-            <p class="text-xl mb-2">The charts below show how responses differ between participants who saw <span class="text-blue-600 font-semibold">rewritten text</span> versus those who saw <span class="text-red-500 font-semibold">original text</span>:</p>
+            <p class="text-xl mb-2">The charts below show how responses differ between participants who saw <span class="font-semibold">rewritten text</span> versus those who saw <span class="font-semibold">original text</span>:</p>
             <p class="text-md mb-8">Your responses are highlighted with a gold dot.</p>
             <div class="grid gap-10">
               {#each surveyStats.questionStats as stat}
-                <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                <div class="bg-white border border-black p-6">
                   <h4 class="text-lg font-medium text-gray-800 mb-6 chart-title">
                     Q{stat.questionId}: {stat.questionText || questions.find(q => q.id === stat.questionId)?.text}
                   </h4>
@@ -456,25 +464,16 @@
               {/each}
             </div>
             
-            
           {:else if errorMessage}
-            <div class="bg-red-50 border border-red-200 text-red-800 px-6 py-4 rounded-lg">
+            <div class="bg-red-50 border border-red-500 text-red-800 px-6 py-4">
               <p class="font-medium">{errorMessage}</p>
-            </div>
-          {:else}
-            <div class="flex justify-center p-10">
-              <svg class="animate-spin h-10 w-10 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              <p class="ml-3 text-xl">Loading results...</p>
             </div>
           {/if}
           
           <div class="mt-10 flex justify-center">
             <button 
               on:click={goToHeadlineRewriter}
-              class="px-8 py-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white text-xl font-semibold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition-all"
+              class="px-8 py-4 bg-black text-white text-xl font-semibold border border-black hover:bg-white hover:text-black transition-all"
             >
               Try the Headline Rewriter
             </button>
@@ -484,12 +483,11 @@
     {/if}
   </div>
 
-  <!-- Add this right before the closing </div> of the main container -->
   {#if isDev}
     <div class="fixed bottom-4 right-4">
       <button 
         on:click={clearSurveyData}
-        class="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg shadow-md hover:bg-red-700 transition-all"
+        class="px-4 py-2 bg-white text-black text-sm font-semibold border border-black hover:bg-black hover:text-white transition-all"
       >
         Clear Survey Data (Dev Only)
       </button>
@@ -519,14 +517,13 @@
   /* Chart container styles */
   .chart-container {
     position: relative;
-    height: 300px; /* Fixed minimum height for charts */
+    height: 150px; /* Reduce height since we're using horizontal bars */
     width: 100%;
   }
   
-  /* On mobile, make charts taller */
   @media (max-width: 768px) {
     .chart-container {
-      height: 350px;
+      height: 200px; /* Slightly taller on mobile */
     }
     
     .chart-title {
