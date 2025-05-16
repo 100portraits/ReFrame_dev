@@ -70,6 +70,11 @@
   }
 </script>
 
+<svelte:head>
+  <title>ReFrame - Headline Analyzer</title>
+  <meta name="description" content="Analyze and improve news headlines about traffic incidents with ReFrame. Understand how to humanize crash reporting." />
+</svelte:head>
+
 <div class="min-h-screen bg-white py-10 px-4 sm:px-6 lg:px-8">
   <div class="max-w-5xl mx-auto">
     <Header />
