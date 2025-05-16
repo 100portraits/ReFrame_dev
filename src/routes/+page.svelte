@@ -14,6 +14,7 @@
   // State for form inputs, to be updated by ExampleArticles
   let headlineInput = $state('');
   let articleBodyInput = $state('');
+  let showCopiedConfirmation = $state(false); // Added state for copied confirmation
 
   // Handle example selection
   function handleExampleSelect(event: CustomEvent<{ headline: string; articleBody: string }>) {
@@ -68,6 +69,19 @@
     //scroll to the top of the page
     window.scrollTo({ top: 0, behavior: 'smooth',  });
   }
+
+  async function copyPhoneNumber(numberToCopy: string) {
+    try {
+      await navigator.clipboard.writeText(numberToCopy);
+      showCopiedConfirmation = true;
+      setTimeout(() => {
+        showCopiedConfirmation = false;
+      }, 2000); // Hide confirmation after 2 seconds
+    } catch (err) {
+      console.error('Failed to copy phone number: ', err);
+      // Optionally, show an error message to the user
+    }
+  }
 </script>
 
 <svelte:head>
@@ -94,7 +108,7 @@
         <div class="results-container">
           <AnalysisResult {analysis} />
           
-          <div class="mt-8 text-center">
+          <div class="">
             <button 
               onclick={(event) => resetAnalysis(event as Event)}
               class="px-8 py-4 bg-black text-white text-lg font-semibold border border-black hover:bg-white hover:text-red-700 hover:border-red-700 transition-all"
@@ -106,17 +120,27 @@
       {/if}
     </main>
     
-    <footer class="mt-16 py-6 border-t border-black text-center">
+    <footer class="mt-16 py-6 border-t border-black ">
       <div class="bg-white border border-black p-8">
         <h2 class="text-2xl font-bold mb-4 text-black">About ReFrame</h2>
         <div class="space-y-4 text-lg">
           <p>ReFrame is part of a research project at the University of Amsterdam exploring how language shapes our perception of road safety.</p>
           <div class="pt-4">
-            <a href="tel:+31616972205"
-              class="inline-block px-6 py-3 bg-black text-white border border-black hover:bg-red-700 hover:border-red-700 transition-all"
-            >
-              Send me a message (sahir) at +31 6 1697 2205 if you have any questions or want to read more!
-            </a>
+            <p class="text-lg text-black">
+              Send me a message (Sahir) at 
+              <span 
+                class="underline cursor-pointer transition-all"
+                onclick={() => copyPhoneNumber('+31616972205')}
+                role="button" 
+                tabindex="0"
+                onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') copyPhoneNumber('+31616972205'); }}
+              >
+                +31 6 1697 2205
+              </span>
+              {#if showCopiedConfirmation}
+                <span class="ml-2 text-green-600 font-semibold text-lg">Copied!</span>
+              {/if}
+            </p>
           </div>
         </div>
       </div>

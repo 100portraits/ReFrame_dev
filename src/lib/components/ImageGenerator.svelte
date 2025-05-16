@@ -51,37 +51,37 @@
   <!-- Image Preview (static structure, captured by html2canvas) -->
   <div class="mt-8 ">
     <div bind:this={canvasElement} class="image-render-source bg-white border-8 border-black ">
-      <div class="flex flex-row w-full">
+      <div class="flex flex-col md:flex-row w-full">
         <!-- Left Column: Original - Red background with white text -->
-        <div class="w-1/2 bg-red-600 p-12 border-r-2 border-black">
-          <h3 class="text-3xl font-black text-white mb-6 uppercase">Original Headline</h3>
-          <p class="text-4xl text-white font-bold leading-tight break-words">{originalHeadline}</p>
+        <div class="w-full md:w-1/2 bg-red-600 px-6 py-4 md:p-12 border-b-2 md:border-b-0 md:border-r-2 border-black">
+          <h3 class="text-md sm:text-2xl md:text-3xl font-black text-white mb-2 md:mb-6 uppercase">Original Headline</h3>
+          <p class="text-md sm:text-3xl md:text-3xl lg:text-4xl text-white font-semibold md:font-bold leading-tight break-words">{originalHeadline}</p>
           
-          <div class="mt-8 flex items-center">
-            <div class="w-16 h-16 flex items-center justify-center border-2 border-white bg-transparent">
-              <span class="text-3xl font-black text-white">{score}</span>
+          <div class="mt-4 md:mt-8 flex items-center">
+            <div class="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center border-2 border-white bg-transparent">
+              <span class="text-xl sm:text-2xl md:text-3xl font-black text-white">{score}</span>
             </div>
-            <span class="ml-3 text-xl font-bold text-white">/ 3 CRITERIA MET</span>
+            <span class="ml-3 text-base sm:text-lg md:text-xl font-bold text-white">/ 3 CRITERIA MET</span>
           </div>
         </div>
         
         <!-- Right Column: Humanized - White background with black text -->
-        <div class="w-1/2 bg-white p-12">
-          <h3 class="text-3xl font-black text-black mb-6 uppercase">Humanized Headline</h3>
-          <p class="text-4xl text-black font-bold leading-tight break-words">{improvedHeadline}</p>
+        <div class="w-full md:w-1/2 bg-white px-6 py-4 md:p-12">
+          <h3 class="text-md sm:text-2xl md:text-3xl font-black text-black mb-2 md:mb-6 uppercase">Humanized Headline</h3>
+          <p class="text-md sm:text-3xl md:text-3xl lg:text-4xl text-black font-semibold md:font-bold leading-tight break-words">{improvedHeadline}</p>
           
-          <div class="mt-8 flex items-center">
-            <div class="w-16 h-16 flex items-center justify-center border-2 border-black bg-transparent">
-              <span class="text-3xl font-black text-black">3</span>
+          <div class="mt-4 md:mt-8 flex items-center">
+            <div class="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center border-2 border-black bg-transparent">
+              <span class="text-xl sm:text-2xl md:text-3xl font-black text-black">3</span>
             </div>
-            <span class="ml-3 text-xl font-bold text-black">/ 3 CRITERIA MET</span>
+            <span class="ml-3 text-base sm:text-lg md:text-xl font-bold text-black">/ 3 CRITERIA MET</span>
           </div>
         </div>
       </div>
       
-      <div class="bg-black p-8 text-white text-center">
-        <p class="text-xl font-bold">ReFrame • humanizing crash headlines</p>
-        <p class="text-sm">
+      <div class="bg-black p-4 md:p-8 text-white text-center">
+        <p class="text-xs md:text-xl font-bold">ReFrame • humanizing crash headlines</p>
+        <p class="text-[12px] md:text-sm">
           reframe-dev.pages.dev
         </p>
       </div>

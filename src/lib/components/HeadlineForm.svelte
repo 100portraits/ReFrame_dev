@@ -48,7 +48,7 @@
     ></textarea>
   </div>
   
-  <div class="text-center">
+  <div class="">
     <button 
       type="submit" 
       class="w-full md:w-auto px-8 py-4 bg-black text-white text-lg font-semibold border border-black hover:bg-white hover:text-red-700 hover:border-red-700 transition-all disabled:opacity-70 disabled:cursor-not-allowed" 
