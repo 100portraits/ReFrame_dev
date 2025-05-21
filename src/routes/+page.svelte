@@ -6,6 +6,8 @@
   import AnalysisResult from '$lib/components/AnalysisResult.svelte';
   import { analyzeHeadline } from '$lib/services/llmService';
   import type { HeadlineAnalysis } from '$lib/types';
+  import { Bike } from '@lucide/svelte';
+
   
   // State using Svelte 5 runes
   let isAnalyzing = $state(false);
@@ -89,9 +91,10 @@
   <meta name="description" content="Analyze and improve news headlines about traffic incidents with ReFrame. Understand how to humanize crash reporting." />
 </svelte:head>
 
-<div class="min-h-screen bg-white py-10 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gray-200 py-10 px-4 sm:px-6 lg:px-8">
   <div class="max-w-5xl mx-auto">
     <Header />
+
     
     <main>
       {#if !analysis}

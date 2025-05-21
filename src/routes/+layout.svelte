@@ -15,6 +15,7 @@
 <slot />
 
 <style>
+
 	:global(html) {
 		box-sizing: border-box;
 	}

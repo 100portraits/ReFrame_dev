@@ -9,19 +9,8 @@
 <div class="bg-white border border-black p-8 mb-8">
   {#if analysis.isRelevant}
     <div class="results-container">
-      <h2 class="text-2xl font-bold text-black mb-6">Headline Analysis Results</h2>
-      
-      <div class="mb-10">
-        <h3 class="text-2xl font-bold text-black mb-6">Original Headline</h3>
-        <div class="p-6 border border-black mb-6">
-          <p class="text-xl font-bold">{analysis.originalHeadline}</p>
-        </div>
-        
-        <CriteriaScorecard 
-          score={analysis.score} 
-          criteriaResults={analysis.criteriaResults} 
-        />
-      </div>
+      <h2 class="text-4xl font-bold text-black mb-6">Headline Analysis Results:</h2>
+
       
       <!-- Image generator now directly shows the comparison and includes 'What's the difference' -->
       <ImageGenerator 

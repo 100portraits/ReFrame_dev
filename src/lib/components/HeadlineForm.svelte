@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import type { AnalysisRequest } from '$lib/types';
-  
+  import { Search } from '@lucide/svelte';
   const dispatch = createEventDispatcher<{
     analyze: AnalysisRequest;
   }>();
@@ -51,7 +51,7 @@
   <div class="">
     <button 
       type="submit" 
-      class="w-full md:w-auto px-8 py-4 bg-black text-white text-lg font-semibold border border-black hover:bg-white hover:text-red-700 hover:border-red-700 transition-all disabled:opacity-70 disabled:cursor-not-allowed" 
+      class="w-full  px-8 py-4 bg-red-700 text-white text-lg font-semibold border border-black hover:bg-white hover:text-red-700 hover:border-red-700 transition-all disabled:opacity-70 disabled:cursor-not-allowed" 
       disabled={!headline.trim() || !articleBody.trim() || isAnalyzing}
     >
       {#if isAnalyzing}
@@ -63,7 +63,10 @@
           Analyzing...
         </span>
       {:else}
-        Analyze Headline
+      <span class="flex items-center justify-center">
+        Analyze Text
+        <Search class="w-5 h-5 ml-2" />
+      </span>
       {/if}
     </button>
   </div>

@@ -50,9 +50,8 @@
           <p>
             <span class="mr-2 font-bold">{result.criterionId}.</span>
             <strong class="{result.passed ? 'text-black' : 'text-red-600'}">
-              {criterion?.name}: {result.passed ? 'Yes' : 'No'}
+              {criterion?.name}{#if !isNotEvaluated}: {result.passed ? 'Yes' : 'No'} - {result.explanation}{/if}
             </strong>
-            - {result.explanation}
             {#if isNotEvaluated}
               <span class="text-gray-400"> (Not Evaluated)</span>
             {/if}
