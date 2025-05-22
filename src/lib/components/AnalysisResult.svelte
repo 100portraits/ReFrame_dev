@@ -9,12 +9,13 @@
 <div class="bg-white border border-black p-8 mb-8">
   {#if analysis.isRelevant}
     <div class="results-container">
-      <h2 class="text-4xl font-bold text-black mb-6">Headline Analysis Results:</h2>
+      <h2 class="text-4xl font-bold text-black mb-6">Results:</h2>
 
       
       <!-- Image generator now directly shows the comparison and includes 'What's the difference' -->
       <ImageGenerator 
         originalHeadline={analysis.originalHeadline}
+        originalExplanation={analysis.criteriaResults}
         improvedHeadline={analysis.improvedHeadline}
         score={analysis.score}
         changes={analysis.changes}

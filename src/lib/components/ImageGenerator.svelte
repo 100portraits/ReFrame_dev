@@ -2,11 +2,15 @@
   import { onMount } from 'svelte';
   import html2canvas from 'html2canvas-pro';
   
-  let { originalHeadline, improvedHeadline, score, changes } = $props<{
+  let { originalHeadline, improvedHeadline, score, changes, originalExplanation } = $props<{
     originalHeadline: string;
     improvedHeadline: string;
     score: 0 | 1 | 2 | 3;
     changes: Array<{
+      criterionId: 1 | 2 | 3;
+      explanation: string;
+    }>;
+    originalExplanation: Array<{
       criterionId: 1 | 2 | 3;
       explanation: string;
     }>;
@@ -44,9 +48,14 @@
   }
   
   // Get explanation for a criterion
-  function getExplanationForCriterion(criterionId: number): string {
+  function getHumanizedExplanationForCriterion(criterionId: number): string {
     const change = changes.find((c: { criterionId: 1 | 2 | 3; explanation: string }) => c.criterionId === criterionId);
     return change ? change.explanation : "This criterion is met in the original headline.";
+  }
+
+  function getOriginalExplanationForCriterion(criterionId: number): string {
+    const explanation = originalExplanation.find((c: { criterionId: 1 | 2 | 3; explanation: string }) => c.criterionId === criterionId);
+    return explanation ? explanation.explanation : "This criterion is met in the original headline.";
   }
 
   async function downloadGeneratedImage() {
@@ -129,7 +138,7 @@
               {#if expandedOriginalCriteria.includes(1)}
                 <div class="pl-11 mt-2 text-white text-sm border-l-2 border-white ml-4">
                   {#if !isCriterionMetInOriginal(1)}
-                    {getExplanationForCriterion(1)}
+                    {getOriginalExplanationForCriterion(1)}
                   {:else}
                     This criterion is met in the original headline.
                   {/if}
@@ -167,7 +176,7 @@
               {#if !isOriginalCriterionDisabled(2) && expandedOriginalCriteria.includes(2)}
                 <div class="pl-11 mt-2 text-white text-sm border-l-2 border-white ml-4">
                   {#if !isCriterionMetInOriginal(2)}
-                    {getExplanationForCriterion(2)}
+                    {getOriginalExplanationForCriterion(2)}
                   {:else}
                     This criterion is met in the original headline.
                   {/if}
@@ -205,7 +214,7 @@
               {#if !isOriginalCriterionDisabled(3) && expandedOriginalCriteria.includes(3)}
                 <div class="pl-11 mt-2 text-white text-sm border-l-2 border-white ml-4">
                   {#if !isCriterionMetInOriginal(3)}
-                    {getExplanationForCriterion(3)}
+                    {getOriginalExplanationForCriterion(3)}
                   {:else}
                     This criterion is met in the original headline.
                   {/if}
@@ -242,7 +251,7 @@
               {#if expandedHumanizedCriteria.includes(1)}
                 <div class="pl-11 mt-2 text-black text-sm border-l-2 border-black ml-4">
                   {#if changes.some((c: { criterionId: 1 | 2 | 3; explanation: string }) => c.criterionId === 1)}
-                    {getExplanationForCriterion(1)}
+                    {getHumanizedExplanationForCriterion(1)}
                   {:else}
                     All parties involved are properly mentioned in this headline.
                   {/if}
@@ -270,7 +279,7 @@
               {#if expandedHumanizedCriteria.includes(2)}
                 <div class="pl-11 mt-2 text-black text-sm border-l-2 border-black ml-4">
                   {#if changes.some((c: { criterionId: 1 | 2 | 3; explanation: string }) => c.criterionId === 2)}
-                    {getExplanationForCriterion(2)}
+                    {getHumanizedExplanationForCriterion(2)}
                   {:else}
                     Human terms are properly used in this headline.
                   {/if}
@@ -298,7 +307,7 @@
               {#if expandedHumanizedCriteria.includes(3)}
                 <div class="pl-11 mt-2 text-black text-sm border-l-2 border-black ml-4">
                   {#if changes.some((c: { criterionId: 1 | 2 | 3; explanation: string }) => c.criterionId === 3)}
-                    {getExplanationForCriterion(3)}
+                    {getHumanizedExplanationForCriterion(3)}
                   {:else}
                     Active voice is properly used in this headline.
                   {/if}
