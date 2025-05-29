@@ -44,7 +44,7 @@
       
       {#each criteriaResults as result, index}
         {@const criterion = criteriaDefinitions.find(c => c.id === result.criterionId)}
-        {@const isNotEvaluated = index > score}
+        {@const isNotEvaluated = index >= score}
         
         <div class="mb-4 {isNotEvaluated ? 'opacity-50' : ''}">
           <p>
