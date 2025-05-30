@@ -15,7 +15,7 @@ export const headlineTerms: HeadlineTerm[] = [
       /\b(fatalities?)\b/i,
       /\b(life|lives)\s+(lost|claimed)\b/i,
     ],
-    explanation: "This term focuses on the outcome without explaining how it happened. It can make deaths seem spontaneous rather than the result of specific actions.",
+    explanation: "Focuses on the outcome without explaining how it happened. It can make deaths seem spontaneous rather than the result of specific actions.",
     category: "outcome-focused"
   },
 
@@ -29,7 +29,7 @@ export const headlineTerms: HeadlineTerm[] = [
       /\b(hospitalized)\b/i,
       /\b(critical|serious)\s+(condition|injuries)\b/i
     ],
-    explanation: "Injury terms that focus on the outcome. Consider adding who caused the injury for clearer understanding of events.",
+    explanation: "Describes the outcome but not the cause. Including who or what caused the injury provides clearer context.",
     category: "outcome-focused"
   },
 
@@ -43,7 +43,7 @@ export const headlineTerms: HeadlineTerm[] = [
       /\b(became|becomes)\s+victim\b/i,
       /\bfound\s+(dead|injured)\b/i
     ],
-    explanation: "Passive voice removes the actor from the sentence. This construction doesn't tell readers who performed the action.",
+    explanation: "Passive voice removes the actor from the sentence. It can make it unclear who performed the action.",
     category: "passive-voice"
   },
 
@@ -55,6 +55,7 @@ export const headlineTerms: HeadlineTerm[] = [
       /\b(kills?|killing)\b/i,
       /\b(injures?|injuring)\b/i,
       /\b(crashes?|crashing)\s+into\b/i,
+      /\b(ploughs?|ploughing)\s+into\b/i,
       /\b(runs?|ran|running)\s+(over|down|into)\b/i,
       /\b(collides?|collided|colliding)\s+with\b/i
     ],
@@ -68,7 +69,7 @@ export const headlineTerms: HeadlineTerm[] = [
       /\b(car|truck|vehicle|van|bus|SUV|sedan|pickup|lorry|semi|motorcycle|scooter|moped)\s+(hits?|strikes?|kills?|injures?|crashes?|collides?|plou?ghs?|slams?|runs?\s+over|runs?\s+down|mows?\s+down)/i,
       /\b(car|truck|vehicle|van|bus|SUV|sedan|pickup|lorry|semi|motorcycle|scooter|moped)\s+(involved|responsible)/i
     ],
-    explanation: "This phrasing gives agency to the vehicle rather than the person operating it. Vehicles don't act independently, they're operated by people.",
+    explanation: "Treats the vehicle as if it acted on its own. Vehicles don't drive themselves. People do.",
     category: "vehicle-agency"
   },
 
@@ -76,10 +77,11 @@ export const headlineTerms: HeadlineTerm[] = [
   {
     patterns: [
       /\b(man|woman|person|child|teenager|boy|girl|toddler|infant|adult|elderly)\b/i,
+      /\b(man|woman|person|teenager)\s+(driving|operating)\s+(car|truck|vehicle|van|bus|SUV|sedan|pickup|lorry|semi|motorcycle|scooter|moped)\b/i,
       /\b(mother|father|parent|student|worker|resident)\b/i,
       /\b\d+[\s-]?year[\s-]?old\b/i
     ],
-    explanation: "Human-centered language emphasizes the people involved rather than their vehicles. This helps readers connect with the human story behind the crash.",
+    explanation: "Human term that helps readers connect with the people affected.",
     category: "humanization"
   },
 
@@ -88,7 +90,7 @@ export const headlineTerms: HeadlineTerm[] = [
     patterns: [
       /\b(car|truck|vehicle|van|bus|SUV|taxi|sedan|pickup|lorry|semi|motorcycle|scooter|moped)\b/i,
     ],
-    explanation: "Vehicle terms without human context. These terms can dehumanize the story by focusing on transportation modes rather than the humans involved.",
+    explanation: "When used without human context, vehicle terms make the story feel mechanical rather than human.",
     category: "vehicle-terms"
   },
 
@@ -102,7 +104,7 @@ export const headlineTerms: HeadlineTerm[] = [
       /\b(motorist|driver)\b/i,
       /\b(motorcyclist)\b/i,
     ],
-    explanation: "Role-based terms that identify the humans involved in the crash.",
+    explanation: "Identifes people by their specific roles and activities rather than just their vehicles.",
     category: "role-based"
   },
 
@@ -112,7 +114,7 @@ export const headlineTerms: HeadlineTerm[] = [
       /\b(accidents?)\b/i,
       /\b(mishaps?)\b/i
     ],
-    explanation: "'Accident' implies unavoidability. Most crashes result from preventable choices. 'Crash' or 'collision' are more neutral terms.",
+    explanation: "'Accident' suggests something unavoidable. Most crashes result from specific actions or choices, not random chance.",
     category: "crash-terminology"
   },
 
@@ -121,7 +123,7 @@ export const headlineTerms: HeadlineTerm[] = [
       /\b(crash|crashes|crashed|crashing)\b/i,
       /\b(collision|collisions)\b/i,
     ],
-    explanation: "Neutral terminology that accurately describes the event without implying fault or inevitability.",
+    explanation: "Describes the event without suggesting it was inevitable or unavoidable.",
     category: "crash-terminology"
   },
 
@@ -135,7 +137,7 @@ export const headlineTerms: HeadlineTerm[] = [
       /\b(reckless|careless|negligent|irresponsible)\b/i,
       /\b(at\s+fault|to\s+blame|responsible\s+for)\b/i
     ],
-    explanation: "Language that assigns blame or describes behavior.",
+    explanation: "This language assigns blame and shifts focus away from the root causes that make our streets dangerous.",
     category: "blame"
   },
 
@@ -147,7 +149,7 @@ export const headlineTerms: HeadlineTerm[] = [
       /\b(led\s+to|leading\s+to)\b/i,
       /\b(responsible\s+for)\b/i
     ],
-    explanation: "Terms that indicate causation or responsibility. These can help clarify sequence of events when used appropriately.",
+    explanation: "Helps establish cause and effect, making it clear how events unfolded.",
     category: "agency"
   },
 
@@ -156,7 +158,7 @@ export const headlineTerms: HeadlineTerm[] = [
     patterns: [
       /\b\d+\s+(killed|dead|died|injured|hurt)\b/i,
     ],
-    explanation: "Clinical or statistical language. While factual, these terms can distance readers from the human impact of crashes.",
+    explanation: "Numbers alone can make tragedies feel abstract and distance readers from the human impact of crashes.",
     category: "statistical"
   },
 
@@ -168,7 +170,7 @@ export const headlineTerms: HeadlineTerm[] = [
       /\bmajor\s+(delays?|disruption|impact\s+on\s+traffic)\b/gi,
       /\b(avoid\s+the\s+area|seek\s+alternate\s+routes?|plan\s+extra\s+time)\b/gi
     ],
-    explanation: "Focusing on traffic impact rather than human consequences. People were hurt, not just schedules.",
+    explanation: "Treats crashes as traffic problems rather than human tragedies.",
     category: "traffic-focus"
   },
   
