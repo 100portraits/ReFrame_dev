@@ -234,7 +234,8 @@
         </div>
         
         <!-- Right Column: Humanized - White background with black text -->
-        <div class="w-full md:w-1/2 bg-white px-6 py-4 md:p-12">
+        <div class="w-full md:w-1/2 bg-white px-6 py-4 md:p-12 md:pt-8">
+          <p class="text-sm text-black -mb-1 font-light">AI-rewritten</p>
           <h3 class="text-md sm:text-2xl md:text-3xl font-black text-black mb-2 md:mb-6 uppercase">Humanized</h3>
           <p class="text-md sm:text-3xl md:text-3xl lg:text-4xl text-black font-semibold md:font-bold leading-tight break-words">
             <HighlightedHeadline 
