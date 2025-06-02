@@ -70,7 +70,7 @@ export async function analyzeHeadline(request: AnalysisRequest): Promise<Analysi
         "X-Title": "ReFrame" // Replace with your project title if different
       },
       body: JSON.stringify({
-        model: "openai/gpt-4o-mini", // Or your preferred model
+        model: "openai/gpt-4.1", // Or your preferred model
         messages: [
           {
             role: "user",
