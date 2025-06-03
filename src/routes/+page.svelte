@@ -127,7 +127,7 @@
       <div class="bg-white border border-black p-8">
         <h2 class="text-2xl font-bold mb-4 text-black">About ReFrame</h2>
         <div class="space-y-4 text-lg">
-          <p>ReFrame is part of a research project at the University of Amsterdam exploring how language shapes our perception of road safety.</p>
+          <p>ReFrame is part of a research project at the University of Amsterdam exploring how language shapes our perception of road safety. <br><br> Note: This website uses generative AI.</p>
           <div class="pt-4">
             <p class="text-lg text-black">
               Send me a message (Sahir) at 

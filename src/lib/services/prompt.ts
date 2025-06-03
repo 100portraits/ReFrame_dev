@@ -38,25 +38,25 @@ Your task is to:
     • The headline uses passive constructions that obscure agency (e.g., "was struck," "was hit," "killed in crash", "dies")
     • Outcome-only descriptions without clear agency (e.g., "Person killed in crash," "X injured")
     
-For example:
-Driver of truck strikes and kills man riding bicycle in East Vancouver crash
-passes all criteria
+    Examples for scoring headlines aganst the criteria:
 
-while
-Cyclist dead after East Vancouver crash
-passes none
+    Headline: "Bicyclist injured after crash on Granny White Pike in Brentwood"
+    Analysis:
+    1. MENTION ALL PARTIES: No - Only mentions bicyclist, missing the other party (driver/vehicle)
+    2. USE HUMAN TERMS: Yes - Uses "bicyclist" which is a human role term 
+    3. ACTIVE VOICE: No - Uses passive "injured after" instead of showing who performed the action
 
-Taxi driver strikes man crossing street in Amsterdam, injuring him during morning rush hour
-passes all criteria
+    Headline: "Pedestrian struck and killed by car on Old Hickory Boulevard"
+    Analysis:
+    1. MENTION ALL PARTIES: Yes - Mentions both pedestrian and car, all parties involved
+    2. USE HUMAN TERMS: No - Uses "car" instead of "driver"
+    3. ACTIVE VOICE: No - Uses passive "struck and killed" instead of showing the driver's action
 
-while
-Amsterdam taxi driver in custody after crash sends pedestrian to the hospital
-passes 1 
-
-What's the difference?
-Mention all parties involved in the crash: The revised headline mentions both the driver and the cyclist, ensuring all parties involved are represented.
-Refer to parties using human terms, not transportation modes: It replaces 'Cyclist dead' with 'man riding bicycle,' employing human terms rather than dehumanizing language.
-Use active voice that clearly shows who did what to whom: The revised headline uses an active voice construction, clearly indicating the driver performed the action.
+    Headline: "Driver of truck strikes and kills pedestrian in New York City"
+    Analysis:
+    1. MENTION ALL PARTIES: Yes - Mentions both driver and the pedestrian
+    2. USE HUMAN TERMS: Yes - Uses "driver" and "pedestrian" (both human role terms)
+    3. ACTIVE VOICE: Yes - "Driver strikes and kills" clearly shows who performed the action
 
 ## Input:
 Headline: "${headline}"
@@ -97,22 +97,15 @@ ${articleBody}
 
     The rewritten headline should be in the same language as the original headline (e.g. if the original headline is in English, the rewritten headline should also be in English, if the original headline is in Dutch, the rewritten headline should also be in Dutch).
 
-    Here are an examples of how to rewrite a headline:
+    Examples for Rewriting Headlines:
 
-    Original Headline: "Teenage boy dies after being hit by truck on notorious road that has claimed other lives"
-    Rewritten Headline: "Driver of truck strikes and kills teenage boy on notorious road known for accidents"
+    Original: "Two adults suffer serious injuries from I-70 collision"
+    Rewritten: "Driver causes collision on I-70, injuring two adults"
+    Key changes made: The revised headline now references the missing party (driver) and uses active voice "causes collision, injuring" instead of passive "suffer serious injuries".
 
-    Differences:
-    - ⁠The original headline uses passive voice ("dies after being hit by truck") and the rewritten headline uses active voice ("driver of truck strikes and kills teenage boy")
-    - ⁠The original headline does not mention all parties involved (the truck driver is not mentioned)
-
-    Original Headline: "Man killed in car crash"
-    Rewritten Headline: "Driver of car kills man in crash"
-
-    Differences:
-    - ⁠The original headline uses passive voice ("killed in car crash") and the rewritten headline uses active voice ("driver of car kills man in crash")
-    - ⁠The original headline does not mention all parties involved (the driver is not mentioned)
-
+    Original: "Pedestrian struck and killed by car on Old Hickory Boulevard"
+    Rewritten: "Driver of car strikes and kills 21-year-old man on Old Hickory Boulevard"
+    Key changes made: The revised headline uses human terms ("driver" instead of "car") and active voice ("strikes and kills") instead of passive ("struck and killed")
 
 ## Output Format (as JSON):
 {

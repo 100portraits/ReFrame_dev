@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import html2canvas from 'html2canvas-pro';
+  import HighlightedHeadline from './HighlightedHeadline.svelte';
   
   let { originalHeadline, improvedHeadline, score, changes, originalExplanation } = $props<{
     originalHeadline: string;
@@ -66,6 +67,8 @@
     }
 
     isGenerating = true;
+    await tick();
+
     try {
       const canvas = await html2canvas(canvasElement, {
         backgroundColor: '#ffffff',
@@ -108,7 +111,13 @@
         <!-- Left Column: Original - Red background with white text -->
         <div class="w-full md:w-1/2 bg-red-600 px-6 py-4 md:p-12 border-b-2 md:border-b-0 md:border-r-2 border-black">
           <h3 class="text-md sm:text-2xl md:text-3xl font-black text-white mb-2 md:mb-6 uppercase">Original</h3>
-          <p class="text-md sm:text-3xl md:text-3xl lg:text-4xl text-white font-semibold md:font-bold leading-tight break-words">{originalHeadline}</p>
+          <p class="text-md sm:text-3xl md:text-3xl lg:text-4xl text-white font-semibold md:font-bold leading-tight break-words">
+            <HighlightedHeadline 
+              headline={originalHeadline} 
+              isDarkBackground={true}
+              showTooltips={!isGenerating}
+              />
+          </p>
           
           <!-- Criteria list for original headline -->
           <div class="mt-6 space-y-5">
@@ -225,9 +234,16 @@
         </div>
         
         <!-- Right Column: Humanized - White background with black text -->
-        <div class="w-full md:w-1/2 bg-white px-6 py-4 md:p-12">
+        <div class="w-full md:w-1/2 bg-white px-6 py-4 md:p-12 md:pt-8">
+          <p class="text-sm text-black -mb-1 font-light">AI-rewritten</p>
           <h3 class="text-md sm:text-2xl md:text-3xl font-black text-black mb-2 md:mb-6 uppercase">Humanized</h3>
-          <p class="text-md sm:text-3xl md:text-3xl lg:text-4xl text-black font-semibold md:font-bold leading-tight break-words">{improvedHeadline}</p>
+          <p class="text-md sm:text-3xl md:text-3xl lg:text-4xl text-black font-semibold md:font-bold leading-tight break-words">
+            <HighlightedHeadline 
+              headline={improvedHeadline} 
+              isDarkBackground={false}
+              showTooltips={!isGenerating}
+            />
+          </p>
           
           <!-- Criteria list for humanized headline - all have checkmarks -->
           <div class="mt-6 space-y-5">
