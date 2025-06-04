@@ -103,9 +103,9 @@
   }
 </script>
 
-<div class="mt-8">
+<div class="mt-2">
   <!-- Image Preview (static structure, captured by html2canvas) -->
-  <div class="mt-8 ">
+  <div class="mt-6 ">
     <div bind:this={canvasElement} class="image-render-source bg-white border-8 border-black font-sans ">
       <div class="flex flex-col md:flex-row w-full">
         <!-- Left Column: Original - Red background with white text -->
