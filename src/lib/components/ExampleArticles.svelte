@@ -42,8 +42,8 @@
         on:click={() => selectExample(i)}
         class="p-4 flex flex-col text-left border border-black transition-all hover:bg-red-700 hover:text-white hover:border-red-700 h-full"
       >
-        <span class="text-xs uppercase tracking-wide font-semibold mb-2">{example.source}</span>
-        <span class="font-bold">{example.title}</span>
+        <span class="text-xs uppercase tracking-wide font-medium mb-2">{example.source}</span>
+        <span class="text-base font-semibold">{example.title}</span>
       </button>
     {/each}
   </div>
