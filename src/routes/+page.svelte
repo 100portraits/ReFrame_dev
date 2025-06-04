@@ -91,7 +91,7 @@
   <meta name="description" content="Analyze and improve news headlines about traffic incidents with ReFrame. Understand how to humanize crash reporting." />
 </svelte:head>
 
-<div class="min-h-screen bg-gray-200 py-10 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-serif">
   <div class="max-w-5xl mx-auto">
     <Header />
 
@@ -114,7 +114,7 @@
           <div class="">
             <button 
               onclick={(event) => resetAnalysis(event as Event)}
-              class="px-8 py-4 bg-black text-white text-lg font-semibold border border-black hover:bg-white hover:text-red-700 hover:border-red-700 transition-all"
+              class="px-8 py-4 bg-black text-white text-xl font-normal border border-black hover:bg-white hover:text-red-700 hover:border-red-700 transition-all"
             >
               Analyze Another Headline
             </button>
@@ -123,9 +123,9 @@
       {/if}
     </main>
     
-    <footer class="mt-16 py-6 border-t border-black ">
+    <footer class="mt-12  border-black ">
       <div class="bg-white border border-black p-8">
-        <h2 class="text-2xl font-bold mb-4 text-black">About ReFrame</h2>
+        <h2 class="text-3xl font-medium mb-4 text-black">About ReFrame</h2>
         <div class="space-y-4 text-lg">
           <p>ReFrame is part of a research project at the University of Amsterdam exploring how language shapes our perception of road safety. <br><br> Note: This website uses generative AI.</p>
           <div class="pt-4">
@@ -153,8 +153,12 @@
 
 <style>
   :global(body) {
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-    background-color: #FFFFFF;
     color: #000000;
+    background-image: url('/background-2.png') !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    background-position: center !important;
+    min-height: 100vh;
   }
 </style>

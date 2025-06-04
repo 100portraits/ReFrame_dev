@@ -35,15 +35,15 @@
 </script>
 
 <div class="mb-8">
-  <p class="text-lg mb-4 text-black">Choose an example or paste your own article:</p>
+  <p class="text-xl mb-4 text-black">Choose an example or paste your own article:</p>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
     {#each exampleArticles as example, i}
       <button 
         on:click={() => selectExample(i)}
         class="p-4 flex flex-col text-left border border-black transition-all hover:bg-red-700 hover:text-white hover:border-red-700 h-full"
       >
-        <span class="text-xs uppercase tracking-wide font-semibold mb-2">{example.source}</span>
-        <span class="font-bold">{example.title}</span>
+        <span class="text-xs uppercase tracking-wide font-medium mb-2">{example.source}</span>
+        <span class="text-base font-semibold">{example.title}</span>
       </button>
     {/each}
   </div>

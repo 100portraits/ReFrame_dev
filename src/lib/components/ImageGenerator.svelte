@@ -103,10 +103,10 @@
   }
 </script>
 
-<div class="mt-8">
+<div class="mt-2">
   <!-- Image Preview (static structure, captured by html2canvas) -->
-  <div class="mt-8 ">
-    <div bind:this={canvasElement} class="image-render-source bg-white border-8 border-black ">
+  <div class="mt-6 ">
+    <div bind:this={canvasElement} class="image-render-source bg-white border-8 border-black font-sans ">
       <div class="flex flex-col md:flex-row w-full">
         <!-- Left Column: Original - Red background with white text -->
         <div class="w-full md:w-1/2 bg-red-600 px-6 py-4 md:p-12 border-b-2 md:border-b-0 md:border-r-2 border-black">
@@ -343,7 +343,7 @@
     <div class="p-4  text-center">
       <button 
         onclick={downloadGeneratedImage} 
-        class="px-8 py-3 bg-white text-black font-bold border-2 border-black hover:bg-red-600 hover:text-white hover:border-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+        class="px-8 py-3 bg-white text-xl text-black font-normal border-2 border-black hover:bg-red-600 hover:text-white hover:border-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
         disabled={isGenerating}
       >
         {#if isGenerating}
@@ -355,7 +355,7 @@
             Generating...
           </span>
         {:else}
-          DOWNLOAD IMAGE
+          Download Image
         {/if}
       </button>
     </div>
