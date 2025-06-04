@@ -43,8 +43,14 @@
         class="p-4 flex flex-col text-left border border-black transition-all hover:bg-red-700 hover:text-white hover:border-red-700 h-full"
       >
         <span class="text-xs uppercase tracking-wide font-medium mb-2">{example.source}</span>
-        <span class="text-base font-semibold">{example.title}</span>
+        <span class="text-xl font-normal">{example.title}</span>
       </button>
     {/each}
   </div>
 </div> 
+
+<style>
+:global(body) {
+  font-family: 'Ancizar Serif', serif;
+}
+</style>
