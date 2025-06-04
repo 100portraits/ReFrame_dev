@@ -160,5 +160,6 @@
     background-attachment: fixed !important;
     background-position: center !important;
     min-height: 100vh;
+    font-family: 'Ancizar Serif', serif;
   }
 </style>
