@@ -102,7 +102,7 @@
         quickTip: 'Check if your coverage suggests that keeping cars moving is more urgent than preventing deaths and injuries.',
         img: '/frames/Motonormativity.png',
         thirtySecondCheck: [
-          'Does my language assume everyone reading drives a car?',
+          'Does my word choice recognize that readers use different modes of transportation?',
           'Am I treating all road users (drivers, cyclists, pedestrians, transit users) as equally important?'
         ],
       },
