@@ -123,7 +123,7 @@
       {/if}
     </main>
     
-    <footer class="mt-16 py-6 border-t border-black ">
+    <footer class="mt-12  border-black ">
       <div class="bg-white border border-black p-8">
         <h2 class="text-3xl font-medium mb-4 text-black">About ReFrame</h2>
         <div class="space-y-4 text-lg">

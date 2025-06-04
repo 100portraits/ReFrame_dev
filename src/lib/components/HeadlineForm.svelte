@@ -27,7 +27,7 @@
 
 <form onsubmit={handleSubmit}>
   <div class="mb-6">
-    <label for="headline" class="block text-lg font-medium text-black mb-3">Headline</label>
+    <label for="headline" class="block text-xl font-medium text-black mb-3">Headline</label>
     <input 
       id="headline"
       type="text" 
@@ -38,7 +38,7 @@
   </div>
   
   <div class="mb-6">
-    <label for="article-body" class="block text-lg font-medium text-black mb-3">Article Body</label>
+    <label for="article-body" class="block text-xl font-medium text-black mb-3">Article Body</label>
     <textarea 
       id="article-body"
       bind:value={articleBody} 

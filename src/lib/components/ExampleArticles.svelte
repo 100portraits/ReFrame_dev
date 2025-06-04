@@ -35,7 +35,7 @@
 </script>
 
 <div class="mb-8">
-  <p class="text-lg mb-4 text-black">Choose an example or paste your own article:</p>
+  <p class="text-xl mb-4 text-black">Choose an example or paste your own article:</p>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
     {#each exampleArticles as example, i}
       <button 
