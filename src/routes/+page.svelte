@@ -114,7 +114,7 @@
           <div class="">
             <button 
               onclick={(event) => resetAnalysis(event as Event)}
-              class="px-8 py-4 bg-black text-white text-lg font-semibold border border-black hover:bg-white hover:text-red-700 hover:border-red-700 transition-all"
+              class="px-8 py-4 bg-black text-white text-xl font-normal border border-black hover:bg-white hover:text-red-700 hover:border-red-700 transition-all"
             >
               Analyze Another Headline
             </button>

@@ -343,7 +343,7 @@
     <div class="p-4  text-center">
       <button 
         onclick={downloadGeneratedImage} 
-        class="px-8 py-3 bg-white text-black font-semibold border-2 border-black hover:bg-red-600 hover:text-white hover:border-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+        class="px-8 py-3 bg-white text-xl text-black font-normal border-2 border-black hover:bg-red-600 hover:text-white hover:border-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
         disabled={isGenerating}
       >
         {#if isGenerating}
@@ -355,7 +355,7 @@
             Generating...
           </span>
         {:else}
-          DOWNLOAD IMAGE
+          Download Image
         {/if}
       </button>
     </div>

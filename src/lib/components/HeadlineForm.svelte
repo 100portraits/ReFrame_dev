@@ -51,7 +51,7 @@
   <div class="">
     <button 
       type="submit" 
-      class="w-full  px-8 py-4 bg-red-700 text-white text-lg font-semibold border border-black hover:bg-white hover:text-red-700 hover:border-red-700 transition-all disabled:opacity-70 disabled:cursor-not-allowed" 
+      class="w-full  px-8 py-4 bg-red-700 text-white text-xl font-normal border border-black hover:bg-white hover:text-red-700 hover:border-red-700 transition-all disabled:opacity-70 disabled:cursor-not-allowed" 
       disabled={!headline.trim() || !articleBody.trim() || isAnalyzing}
     >
       {#if isAnalyzing}
