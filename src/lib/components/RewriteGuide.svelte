@@ -209,7 +209,7 @@
     >
       <p class='absolute top-4 left-4 font-bold cursor-pointer font-sans' onclick={closeModal}><X class='w-6 h-6  '/></p>
       <div class="flex flex-row justify-between items-center">
-        <h1 class="text-5xl font-bold">Crash Reporting Checklist: </h1>
+        <h1 class="text-5xl font-normal">Crash Reporting Checklist: </h1>
         <div class="{getScoreColor()} px-4 py-2 pb-4 rounded-md flex items-center justify-center transition-all duration-300"><p class="text-white text-5xl font-normal ">{score}/5</p></div>
       </div>
       <p class="text-md mb-8">Click the images to check items off.</p>

@@ -14,7 +14,7 @@
 <div class="bg-white border border-black p-8 mb-8">
   {#if analysis.isRelevant}
     <div class="results-container">
-      <h2 class="text-4xl font-bold text-black mb-2">Results:</h2>
+      <h2 class="text-4xl font-normal text-black mb-2">Results:</h2>
       <a class="text-lg text-black underline underline-offset-4 decoration-0 hover:decoration-1 hover:text-red-600 transition-all cursor-pointer" onclick={() => showModal = true}>
         Are you a journalist (or curious about how we did this)?
       </a>

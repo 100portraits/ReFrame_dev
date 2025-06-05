@@ -10,3 +10,7 @@
     src: url(/fonts/AncizarSerif-VariableFont_wght.ttf) format("truetype");
   }
 }
+
+body {
+  font-family: 'Ancizar Serif', serif;
+}
