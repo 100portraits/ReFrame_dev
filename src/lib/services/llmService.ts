@@ -66,11 +66,11 @@ export async function analyzeHeadline(request: AnalysisRequest): Promise<Analysi
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${VITE_OPENROUTER_API_KEY}`,
-        "HTTP-Referer": "https://headline-rewriter.pages.dev", // Replace with your actual site URL if different
-        "X-Title": "ReFrame" // Replace with your project title if different
+        "HTTP-Referer": "https://reframe-dev.pages.dev", 
+        "X-Title": "ReFrame" 
       },
       body: JSON.stringify({
-        model: "openai/gpt-4.1", // Or your preferred model
+        model: "openai/gpt-4.1", 
         messages: [
           {
             role: "user",
